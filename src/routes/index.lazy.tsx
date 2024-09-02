@@ -1,4 +1,4 @@
-import TasksList from "@/pages/tasks/TasksList";
+import ToDo from "@/pages/tasks/ToDo";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 
@@ -9,7 +9,7 @@ export const Route = createLazyFileRoute("/")({
 function Index() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <TasksList />
+      <ToDo />
     </Suspense>
   );
 }

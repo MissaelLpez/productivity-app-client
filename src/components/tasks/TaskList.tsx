@@ -1,3 +1,4 @@
+import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
 import TaskCard from "@/components/tasks/TaskCard";
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
@@ -8,9 +9,10 @@ import {
 } from "@dnd-kit/sortable";
 import { useState } from "react";
 
-const TasksList = () => {
+const TaskList = () => {
   const { tasks } = useGetTasks();
   const [list, setList] = useState(tasks);
+  const { reorderTasks } = useReorderTaskList();
 
   /* execute in drag end */
   const handleDragEnd = (event: DragEndEvent) => {
@@ -21,6 +23,13 @@ const TasksList = () => {
       const newIndex = list.findIndex((task) => task.id === over?.id);
 
       const newOrder = arrayMove(list, oldIndex, newIndex);
+
+      const newArray = newOrder.map((task, index) => ({
+        id: task.id,
+        list_number: index + 1,
+      }));
+
+      reorderTasks({ variables: { newOrder: newArray } });
 
       return newOrder;
     });
@@ -39,4 +48,4 @@ const TasksList = () => {
   );
 };
 
-export default TasksList;
+export default TaskList;
