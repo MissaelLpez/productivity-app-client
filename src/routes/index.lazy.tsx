@@ -1,4 +1,6 @@
+import TasksList from "@/components/tasks/TasksList";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { Suspense } from "react";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -6,8 +8,8 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
   return (
-    <div>
-      <h3>Lista de tareas</h3>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <TasksList />
+    </Suspense>
   );
 }
