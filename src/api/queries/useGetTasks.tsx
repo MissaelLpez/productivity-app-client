@@ -1,20 +1,5 @@
+import { GetAllTasksData } from "@/vite-env";
 import { gql, useSuspenseQuery } from "@apollo/client";
-
-interface Task {
-  id: string;
-  name: string;
-  description: string;
-  status: string;
-  defined_time: string;
-  started_at: string | null;
-  completed_at: string | null;
-  paused_in: string | null;
-  list_number: number;
-}
-
-interface GetAllTasksData {
-  getAllTasks: Task[];
-}
 
 const GET_ALL_TASKS = gql`
   query GetAllTasks {
