@@ -1,4 +1,4 @@
-import TasksList from "@/components/tasks/TasksList";
+import TasksList from "@/pages/tasks/TasksList";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 
