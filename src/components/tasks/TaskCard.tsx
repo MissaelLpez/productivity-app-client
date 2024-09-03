@@ -28,9 +28,10 @@ const TaskCard = ({ task }: Props) => {
       {...listeners}
       ref={setNodeRef}
       style={style}
-      className="mb-5 p-5 rounded-xl"
+      className="mb-5 p-5 rounded-xl cursor-pointer"
     >
-      {task.id} {task.name} list: {task.list_number}
+      <p className="text-lg capitalize tracking-wide font-bold">{task.name}</p>
+      <p className="text-base capitalize tracking-wide">{task.description}</p>
     </Card>
   );
 };

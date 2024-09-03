@@ -12,7 +12,7 @@ export interface Task {
   id: string;
   name: string;
   description: string;
-  status: string;
+  status: "todo" | "in_progress" | "paused" | "completed";
   defined_time: string;
   started_at: string | null;
   completed_at: string | null;
@@ -22,4 +22,16 @@ export interface Task {
 
 export interface GetAllTasksData {
   getAllTasks: Task[];
+}
+
+export interface Stats {
+  completed: number;
+  todo: number;
+  focusedTime: FocusedTime;
+}
+
+export interface FocusedTime {
+  hours: number;
+  minutes: number;
+  seconds: number;
 }

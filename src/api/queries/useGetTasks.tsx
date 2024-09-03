@@ -1,4 +1,4 @@
-import { GetAllTasksData } from "@/vite-env";
+import { GetAllTasksData, Stats } from "@/vite-env";
 import { gql, useSuspenseQuery } from "@apollo/client";
 
 const GET_ALL_TASKS = gql`
@@ -22,7 +22,30 @@ const useGetTasks = () => {
     fetchPolicy: "cache-and-network",
   });
 
-  return { tasks: data.getAllTasks };
+  const tasks = data.getAllTasks;
+
+  /* Get task stats */
+  const completed = tasks.filter((task) => task.status === "completed").length;
+  const todo = tasks.filter((task) => task.status === "todo").length;
+
+  const rangTime = tasks.reduce((acc, act) => {
+    const diff = Number(act.completed_at) - Number(act.started_at);
+    return acc + diff;
+  }, 0);
+
+  const seconds = rangTime / 1000;
+  const minutes = seconds / 60;
+  const hours = minutes / 60;
+
+  const focusedTime = {
+    hours,
+    minutes,
+    seconds,
+  };
+
+  const stats: Stats = { completed, todo, focusedTime };
+
+  return { tasks, stats };
 };
 
 export default useGetTasks;
