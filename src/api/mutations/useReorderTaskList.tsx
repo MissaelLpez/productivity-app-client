@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 
 const REORDER_TASK_LIST = gql`
-  mutation Mutation($newOrder: [NewOrderInput!]!) {
+  mutation ReorderTasks($newOrder: [NewOrderInput!]!) {
     reorderTasks(newOrder: $newOrder) {
       id
       name

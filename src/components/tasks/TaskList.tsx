@@ -40,9 +40,11 @@ const TaskList = () => {
       {/* Sortable List */}
       <SortableContext items={list} strategy={verticalListSortingStrategy}>
         {/* Render task card component */}
-        {list.map((elm) => (
-          <TaskCard key={elm.id} task={elm} />
-        ))}
+        <div className="grid grid-cols-1 gap-y-4">
+          {list.map((elm) => (
+            <TaskCard key={elm.id} task={elm} />
+          ))}
+        </div>
       </SortableContext>
     </DndContext>
   );

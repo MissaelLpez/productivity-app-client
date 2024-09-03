@@ -28,7 +28,7 @@ const TaskCard = ({ task }: Props) => {
       {...listeners}
       ref={setNodeRef}
       style={style}
-      className="mb-5 p-5 rounded-xl cursor-pointer"
+      className="p-5 rounded-xl cursor-pointer h-32"
     >
       <p className="text-lg capitalize tracking-wide font-bold">{task.name}</p>
       <p className="text-base capitalize tracking-wide">{task.description}</p>
