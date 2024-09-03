@@ -14,7 +14,7 @@ export const Route = createRootRoute({
           <ToggleTheme />
         </header>
 
-        <main className="p-5 grid grid-cols-5 gap-x-5">
+        <main className="p-5 lg:px-96 grid grid-cols-5 gap-x-5">
           <section className="p-2 lg:p-5 hidden lg:block col-span-1 border-none bg-transparent rounded-xl">
             Menu
           </section>
