@@ -16,6 +16,7 @@ const REORDER_TASK_LIST = gql`
   }
 `;
 
+/* Mutation to change order task list */
 const useReorderTaskList = () => {
   const [reorderTasks, { data }] = useMutation(REORDER_TASK_LIST);
   return { reorderTasks, data };

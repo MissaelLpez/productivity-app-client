@@ -7,7 +7,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TaskList = () => {
   const { tasks } = useGetTasks();
@@ -34,6 +34,10 @@ const TaskList = () => {
       return newOrder;
     });
   };
+
+  useEffect(() => {
+    setList(tasks);
+  }, [tasks]);
 
   return tasks.length ? (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

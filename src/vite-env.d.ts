@@ -9,7 +9,7 @@ interface ImportMeta {
 }
 
 export interface Task {
-  id: string;
+  id: number;
   name: string;
   description: string;
   status: "todo" | "in_progress" | "paused" | "completed";

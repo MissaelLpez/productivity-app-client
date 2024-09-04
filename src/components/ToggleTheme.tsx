@@ -1,3 +1,4 @@
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ToggleTheme = () => {
@@ -33,7 +34,11 @@ const ToggleTheme = () => {
 
   return (
     <div onClick={changeMode} className="cursor-pointer text-xl">
-      {mode === "dark" ? "☀️" : "🌙"}
+      {mode === "dark" ? (
+        <Sun size={30} className="text-primary-500" />
+      ) : (
+        <Moon size={30} />
+      )}
     </div>
   );
 };

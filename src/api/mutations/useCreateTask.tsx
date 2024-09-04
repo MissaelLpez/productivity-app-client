@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import { GET_ALL_TASKS } from "../queries/useGetTasks";
 
 const CREATE_TASK = gql`
   mutation CreateTask($createTaskInput: CreateTaskInput!) {
@@ -16,8 +17,12 @@ const CREATE_TASK = gql`
   }
 `;
 
+/* Mutation to crate a task */
 const useCreateTask = () => {
-  const [createTask, { data }] = useMutation(CREATE_TASK);
+  const [createTask, { data }] = useMutation(CREATE_TASK, {
+    /* Update tasks data */
+    refetchQueries: [{ query: GET_ALL_TASKS }],
+  });
   return { createTask, data };
 };
 

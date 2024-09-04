@@ -1,7 +1,7 @@
 import { GetAllTasksData, Stats } from "@/vite-env";
 import { gql, useSuspenseQuery } from "@apollo/client";
 
-const GET_ALL_TASKS = gql`
+export const GET_ALL_TASKS = gql`
   query GetAllTasks {
     getAllTasks {
       id
