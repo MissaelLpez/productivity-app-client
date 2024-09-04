@@ -35,7 +35,7 @@ const TaskList = () => {
     });
   };
 
-  return (
+  return tasks.length ? (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       {/* Sortable List */}
       <SortableContext items={list} strategy={verticalListSortingStrategy}>
@@ -47,6 +47,8 @@ const TaskList = () => {
         </div>
       </SortableContext>
     </DndContext>
+  ) : (
+    <h3 className="text-center text-xl font-bold my-10">No hay tareas</h3>
   );
 };
 

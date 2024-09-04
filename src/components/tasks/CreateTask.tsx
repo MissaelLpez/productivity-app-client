@@ -6,6 +6,13 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../ui/select";
 
 const CreateTask = () => {
   const { createTask } = useCreateTask();
@@ -17,9 +24,7 @@ const CreateTask = () => {
 
     const form = Object.fromEntries(new FormData(e.target as HTMLFormElement));
 
-    const data = { ...form, defined_time: "3600000" };
-
-    createTask({ variables: { createTaskInput: data } });
+    createTask({ variables: { createTaskInput: { ...form } } });
 
     dispatch(setOpenCreateTask());
   };
@@ -40,7 +45,7 @@ const CreateTask = () => {
               name="name"
               placeholder="Crear pagina web"
               className="bg-transparent border border-primary-500 rounded-xl p-2 w-full mt-2 mb-4 outline-none"
-              autoComplete="true"
+              autoComplete="off"
               required
             />
           </label>
@@ -51,9 +56,23 @@ const CreateTask = () => {
               name="description"
               placeholder="Pagina web para ..."
               className="bg-transparent border border-primary-500 rounded-xl p-2 w-full mt-2 mb-4 outline-none"
-              autoComplete="true"
+              autoComplete="off"
               required
             />
+          </label>
+
+          <label>
+            Tiempo
+            <Select name="defined_time">
+              <SelectTrigger className="w-1/3 mt-2 p-2 outline-none rounded-xl border border-primary-500">
+                <SelectValue placeholder="Definir tiempo" />
+              </SelectTrigger>
+              <SelectContent className="text-white outline-none">
+                <SelectItem value="1800000">15 mins.</SelectItem>
+                <SelectItem value="3600000">30 mins.</SelectItem>
+                <SelectItem value="7200000">1 hora</SelectItem>
+              </SelectContent>
+            </Select>
           </label>
 
           <Button type="submit" className="my-5 mx-auto rounded-xl w-1/3">
