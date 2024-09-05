@@ -1,5 +1,6 @@
 import useUpdateTask from "@/api/mutations/useUpdateTask";
 import useGetTasks from "@/api/queries/useGetTasks";
+import useCountdown from "@/hooks/useCountdown";
 import useGetTaskById from "@/hooks/useGetTaskById";
 import { UpdateTaskInput } from "@/vite-env";
 import { CircleCheck, PauseCircle, PlayCircle, RotateCcw } from "lucide-react";
@@ -16,6 +17,12 @@ const TaskTimerActions = ({ taskId }: Props) => {
 
   const currentTime = Date.now();
 
+  const targetTime = new Date(String(task?.finish_in));
+
+  const [days, hours, minutes, seconds, difference] = useCountdown(
+    Number(targetTime)
+  );
+
   if (!data || !task) {
     return null;
   }
@@ -24,12 +31,25 @@ const TaskTimerActions = ({ taskId }: Props) => {
 
   /* Functions */
   const update = (updateTaskInput: UpdateTaskInput) => {
-    console.log(updateTaskInput.status);
-
-    if (updateTaskInput.status === "in_progress" && stats.inProgress > 0) {
+    if (
+      (updateTaskInput.status === "in_progress" ||
+        updateTaskInput.status === "continuing") &&
+      stats.inProgress > 0
+    ) {
       return alert(
         "Ya hay una tarea en progreso. Terminala on pausala para empezar una nueva"
       );
+    }
+
+    if (updateTaskInput.status === "paused") {
+      updateTask({
+        updateTaskInput: {
+          ...updateTaskInput,
+          redefined_time: String(difference),
+        },
+      });
+
+      return;
     }
 
     updateTask({ updateTaskInput });
@@ -66,7 +86,6 @@ const TaskTimerActions = ({ taskId }: Props) => {
             update({
               id: task.id,
               status: "paused",
-              paused_in: currentTime,
             })
           }
           size={50}

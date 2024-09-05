@@ -1,6 +1,5 @@
 import useCountdown from "@/hooks/useCountdown";
 import useGetTaskById from "@/hooks/useGetTaskById";
-import { getTime } from "@/utils/getTime";
 
 interface Props {
   taskId: number;
@@ -9,19 +8,16 @@ interface Props {
 const TaskCountdown = ({ taskId }: Props) => {
   const { task } = useGetTaskById(taskId);
 
-  // Obtén el tiempo restante desde ahora hasta el final del temporizador
-  const remainingTime = getTime(task);
+  const targetTime = new Date(String(task?.finish_in));
 
-  // Usa useCountdown para obtener el tiempo restante
-  const [days, hours, minutes, seconds] = useCountdown(remainingTime);
+  const [days, hours, minutes, seconds] = useCountdown(Number(targetTime));
 
-  const formatTime = (time: number) => time.toString().padStart(2, "0");
+  const formatTime = (time: number | undefined) =>
+    Number(time).toString().padStart(2, "0");
 
   if (!task) {
     return null;
   }
-
-  console.log(`${hours}h:${minutes}m:${seconds}s`);
 
   return (
     <div>

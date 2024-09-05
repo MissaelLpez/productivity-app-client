@@ -14,7 +14,9 @@ export interface Task {
   description: string;
   status: "todo" | "in_progress" | "paused" | "continuing" | "completed";
   defined_time: string;
+  redefined_time: string;
   started_at: string | null;
+  finish_in: string | null;
   completed_at: string | null;
   paused_in: string | null;
   list_number: number;
@@ -55,7 +57,9 @@ export interface UpdateTaskInput {
   description?: string;
   status?: "todo" | "in_progress" | "paused" | "continuing" | "completed";
   defined_time?: string;
+  redefined_time?: string;
   started_at?: number;
+  finish_at?: number;
   completed_at?: string | null;
   paused_in?: number | null;
   list_number?: number;
@@ -65,6 +69,7 @@ export interface CreateTaskInput {
   name: string;
   description: string;
   defined_time: string;
+  redefined_time: string;
 }
 
 export interface NewOrderInput {

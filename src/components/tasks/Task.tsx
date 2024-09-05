@@ -18,7 +18,7 @@ const Task = () => {
 
   /* Hooks */
   const { minutes, seconds } = useFormattedTime({
-    taskId: Number(task?.id),
+    task,
   });
 
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const Task = () => {
               <TaskCountdown taskId={task.id} />
             ) : (
               <p className="text-3xl text-dark dark:text-white">
-                {minutes}:{seconds}s
+                {minutes}:{seconds}
               </p>
             )}
           </div>

@@ -1,17 +1,15 @@
-import useGetTaskById from "./useGetTaskById";
+import { Task } from "@/vite-env";
 
 interface Props {
-  taskId: number;
+  task: Task | null | undefined;
 }
 
-const useFormattedTime = ({ taskId }: Props) => {
-  const { task } = useGetTaskById(taskId);
-
+const useFormattedTime = ({ task }: Props) => {
   if (!task) {
     return { formattedTime: "" };
   }
 
-  const milliseconds = Number(task.defined_time);
+  const milliseconds = Number(task.redefined_time);
   const totalSeconds = Math.floor(milliseconds / 1000);
 
   /* Calculate hours, minutes, and seconds */

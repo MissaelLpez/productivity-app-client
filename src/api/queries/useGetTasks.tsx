@@ -11,7 +11,9 @@ export const GET_ALL_TASKS = gql`
       description
       status
       defined_time
+      redefined_time
       started_at
+      finish_in
       completed_at
       paused_in
       list_number

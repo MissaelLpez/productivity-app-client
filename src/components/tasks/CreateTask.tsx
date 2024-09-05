@@ -27,7 +27,9 @@ const CreateTask = () => {
       new FormData(e.target as HTMLFormElement)
     ) as unknown as CreateTaskInput;
 
-    createTask({ createTaskInput: { ...form } });
+    createTask({
+      createTaskInput: { ...form, redefined_time: form.defined_time },
+    });
   };
 
   return (
