@@ -1,7 +1,11 @@
-import { setTaskData } from "@/store/slices/modalSlice";
-import { gql, useMutation } from "@apollo/client";
-import { useDispatch } from "react-redux";
-import { GET_ALL_TASKS } from "../queries/useGetTasks";
+import { graphqlClient } from "@/gqlClient";
+import { UpdateTaskInput, UpdateTaskResponse } from "@/vite-env";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { gql } from "graphql-request";
+
+interface Payload {
+  updateTaskInput: UpdateTaskInput;
+}
 
 const UPDATE_TASK = gql`
   mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
@@ -19,17 +23,26 @@ const UPDATE_TASK = gql`
   }
 `;
 
-const useUpdateTask = () => {
-  const dispatch = useDispatch();
+const gqlRequest = async ({ updateTaskInput }: Payload) => {
+  const variables = { updateTaskInput };
+  const data = await graphqlClient.request<UpdateTaskResponse>(
+    UPDATE_TASK,
+    variables
+  );
+  return data.updateTask;
+};
 
-  const [updateTask, { data }] = useMutation(UPDATE_TASK, {
-    refetchQueries: [{ query: GET_ALL_TASKS }],
-    onCompleted: () => {
-      dispatch(setTaskData(data));
+/* Mutation to update a task */
+const useUpdateTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update-task"],
+    mutationFn: gqlRequest,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["all-tasks"] });
     },
   });
-
-  return { updateTask };
 };
 
 export default useUpdateTask;

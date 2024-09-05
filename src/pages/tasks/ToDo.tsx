@@ -5,8 +5,14 @@ import ToDoList from "@/components/tasks/ToDOList";
 import { Helmet } from "react-helmet";
 
 const ToDo = () => {
-  const { stats, inProgress } = useGetTasks();
-  console.log(inProgress);
+  //const { stats, inProgress } = useGetTasks();
+  const { data } = useGetTasks();
+
+  if (!data) {
+    return null;
+  }
+
+  const { stats, inProgress } = data;
 
   return (
     <div>

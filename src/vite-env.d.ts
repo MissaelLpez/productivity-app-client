@@ -20,8 +20,16 @@ export interface Task {
   list_number: number;
 }
 
-export interface GetAllTasksData {
+export interface GetAllTasksDataResponse {
   getAllTasks: Task[];
+}
+
+export interface UpdateTaskResponse {
+  updateTask: Task;
+}
+
+export interface CreateTaskResponse {
+  createTask: Task;
 }
 
 export interface Stats {
@@ -47,4 +55,10 @@ export interface UpdateTaskInput {
   completed_at?: string | null;
   paused_in?: number | null;
   list_number?: number;
+}
+
+export interface CreateTaskInput {
+  name: string;
+  description: string;
+  defined_time: string;
 }

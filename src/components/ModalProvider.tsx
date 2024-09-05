@@ -1,7 +1,6 @@
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import CreateTask from "./tasks/CreateTask";
-import EditTask from "./tasks/EditTask";
 import Task from "./tasks/Task";
 
 const ModalProvider = () => {
@@ -9,10 +8,14 @@ const ModalProvider = () => {
     (state: RootState) => state.modals.openTask
   );
 
+  const createTaskModalOpen = useSelector(
+    (state: RootState) => state.modals.openCreateTask
+  );
+
   return (
     <>
-      <CreateTask />
-      <EditTask />
+      {createTaskModalOpen && <CreateTask />}
+      {/* <EditTask /> */}
       {taskModalOpen && <Task />}
     </>
   );

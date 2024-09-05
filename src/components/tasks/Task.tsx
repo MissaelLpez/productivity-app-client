@@ -1,4 +1,3 @@
-import useUpdateTask from "@/api/mutations/useUpdateTask";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
@@ -14,14 +13,13 @@ const Task = () => {
   const task = useSelector((state: RootState) => state.modals.task);
 
   /* Hooks */
-  const { updateTask } = useUpdateTask();
   const { minutes, seconds } = useFormattedTime({
     task,
     used_in: "timer",
   });
   const dispatch = useDispatch();
 
-  const currentTime = Date.now();
+  /* const currentTime = Date.now(); */
 
   if (!task) {
     return null;
@@ -52,7 +50,7 @@ const Task = () => {
             </p>
           </div>
 
-          <TaskTimerActions task={task} />
+          <TaskTimerActions taskId={task.id} />
         </div>
       </DialogContent>
     </Dialog>

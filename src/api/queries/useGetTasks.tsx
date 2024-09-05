@@ -1,5 +1,7 @@
-import { GetAllTasksData, Stats, Task } from "@/vite-env";
-import { gql, useSuspenseQuery } from "@apollo/client";
+import { graphqlClient } from "@/gqlClient";
+import { GetAllTasksDataResponse, Stats } from "@/vite-env";
+import { useQuery } from "@tanstack/react-query";
+import { gql } from "graphql-request";
 
 export const GET_ALL_TASKS = gql`
   query GetAllTasks {
@@ -17,48 +19,38 @@ export const GET_ALL_TASKS = gql`
   }
 `;
 
-const useGetTasks = () => {
-  const { data } = useSuspenseQuery<GetAllTasksData>(GET_ALL_TASKS, {
-    fetchPolicy: "cache-and-network",
-  });
-
-  const tasks = data.getAllTasks;
-
-  /* Get task stats */
-  const completed: Task[] = tasks.filter((task) => task.status === "completed");
-  const todo: Task[] = tasks.filter((task) => task.status === "todo");
-  const inProgress: Task[] = tasks.filter(
-    (task) => task.status === "in_progress"
-  );
-  const showInTodoList: Task[] = tasks.filter((task) =>
-    ["continuing", "paused", "todo"].includes(task.status)
+const gqlRequest = async () => {
+  const data = await graphqlClient.request<GetAllTasksDataResponse>(
+    GET_ALL_TASKS
   );
 
-  const rangTime = tasks.reduce((acc, act) => {
-    const diff = Number(act.completed_at) - Number(act.started_at);
-    return acc + diff;
-  }, 0);
+  const { getAllTasks: tasks } = data;
 
-  const seconds = rangTime / 1000;
-  const minutes = seconds / 60;
-  const hours = minutes / 60;
+  const all = tasks;
+  const todo = tasks.filter((task) => task.status === "todo");
+  const inProgress = tasks.filter((task) => task.status === "in_progress");
 
-  const focusedTime = {
-    hours,
-    minutes,
-    seconds,
-  };
+  const actionableTasks = tasks.filter((task) =>
+    ["paused", "continuing", "todo"].includes(task.status)
+  );
 
   const stats: Stats = {
-    completed: completed.length,
+    completed: 0,
     todo: todo.length,
     inProgress: inProgress.length,
-    focusedTime,
+    focusedTime: { hours: 0, minutes: 0, seconds: 0 },
   };
 
-  console.log(tasks);
+  return { all, todo, inProgress, actionableTasks, stats };
+};
 
-  return { tasks, todo, inProgress, showInTodoList, stats };
+const useGetTasks = () => {
+  return useQuery({
+    queryKey: ["all-tasks"],
+    queryFn: gqlRequest,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export default useGetTasks;

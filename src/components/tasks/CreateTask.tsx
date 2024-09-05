@@ -1,6 +1,7 @@
 import useCreateTask from "@/api/mutations/useCreateTask";
 import { setOpenCreateTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
+import { CreateTaskInput } from "@/vite-env";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,25 +9,25 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "../ui/select";
 
 const CreateTask = () => {
-  const { createTask } = useCreateTask();
+  const { mutate: createTask } = useCreateTask();
   const isOpen = useSelector((state: RootState) => state.modals.openCreateTask);
   const dispatch = useDispatch();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = Object.fromEntries(new FormData(e.target as HTMLFormElement));
+    const form = Object.fromEntries(
+      new FormData(e.target as HTMLFormElement)
+    ) as unknown as CreateTaskInput;
 
-    createTask({ variables: { createTaskInput: { ...form } } });
-
-    dispatch(setOpenCreateTask());
+    createTask({ createTaskInput: { ...form } });
   };
 
   return (

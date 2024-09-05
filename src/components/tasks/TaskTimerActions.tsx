@@ -1,16 +1,26 @@
 import useUpdateTask from "@/api/mutations/useUpdateTask";
 import useGetTasks from "@/api/queries/useGetTasks";
-import { Task, UpdateTaskInput } from "@/vite-env";
+import useGetTaskById from "@/hooks/useGetTaskById";
+import { UpdateTaskInput } from "@/vite-env";
 import { CircleCheck, PauseCircle, PlayCircle, RotateCcw } from "lucide-react";
 
 interface Props {
-  task: Task;
+  taskId: number;
 }
 
-const TaskTimerActions = ({ task }: Props) => {
-  const { stats } = useGetTasks();
-  const { updateTask } = useUpdateTask();
+const TaskTimerActions = ({ taskId }: Props) => {
+  /* Hooks */
+  const { task } = useGetTaskById(taskId);
+  const { data } = useGetTasks();
+  const { mutate: updateTask } = useUpdateTask();
+
   const currentTime = Date.now();
+
+  if (!data || !task) {
+    return null;
+  }
+
+  const { stats } = data;
 
   /* Functions */
   const update = (updateTaskInput: UpdateTaskInput) => {
@@ -20,11 +30,7 @@ const TaskTimerActions = ({ task }: Props) => {
       );
     }
 
-    updateTask({
-      variables: {
-        updateTaskInput,
-      },
-    });
+    updateTask({ updateTaskInput });
 
     return;
   };

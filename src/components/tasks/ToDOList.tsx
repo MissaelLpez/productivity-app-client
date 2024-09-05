@@ -1,6 +1,4 @@
-import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
-import TaskCard from "@/components/tasks/TaskCard";
 import {
   closestCenter,
   DndContext,
@@ -15,6 +13,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
+import TaskCard from "./TaskCard";
 
 const ToDoList = () => {
   const sensors = useSensors(
@@ -25,46 +24,60 @@ const ToDoList = () => {
     })
   );
 
-  const { showInTodoList: todo } = useGetTasks();
-  const [list, setList] = useState(todo);
-  const { reorderTasks } = useReorderTaskList();
+  const { data } = useGetTasks();
+
+  const [list, setList] = useState(data?.actionableTasks);
+  // const { reorderTasks } = useReorderTaskList();
 
   /* execute in drag end */
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     setList((list) => {
-      const oldIndex = list.findIndex((task) => task.id === active.id);
-      const newIndex = list.findIndex((task) => task.id === over?.id);
+      const oldIndex = list?.findIndex((task) => task.id === active.id);
+      const newIndex = list?.findIndex((task) => task.id === over?.id);
 
-      const newOrder = arrayMove(list, oldIndex, newIndex);
+      const newOrder = arrayMove(
+        list || [],
+        Number(oldIndex),
+        Number(newIndex)
+      );
 
-      const newArray = newOrder.map((task, index) => ({
+      /* const newArray = newOrder.map((task, index) => ({
         id: task.id,
         list_number: index + 1,
       }));
 
-      reorderTasks({ variables: { newOrder: newArray } });
+      reorderTasks({ variables: { newOrder: newArray } }); */
 
       return newOrder;
     });
   };
 
   useEffect(() => {
-    setList(todo);
-  }, [todo, list]);
+    setList(data?.actionableTasks);
+  }, [data?.actionableTasks]);
 
-  return todo.length ? (
+  if (!data) {
+    return null;
+  }
+
+  const { actionableTasks } = data;
+
+  return actionableTasks.length ? (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
       {/* Sortable List */}
-      <SortableContext items={list} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={list || actionableTasks}
+        strategy={verticalListSortingStrategy}
+      >
         {/* Render task card component */}
         <div className="grid grid-cols-1 gap-y-4">
-          {list.map((elm) => (
+          {list?.map((elm) => (
             <TaskCard key={elm.id} task={elm} />
           ))}
         </div>
