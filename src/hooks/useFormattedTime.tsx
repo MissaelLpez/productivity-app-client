@@ -12,15 +12,12 @@ const useFormattedTime = ({ task, used_in }: Props) => {
 
   let milliseconds = 0;
 
-  if (
-    task.status === "todo" ||
-    used_in === "card" ||
-    (task.status === "in_progress" && !task.paused_in)
-  ) {
+  if (task.status === "todo" || used_in === "card") {
+    console.log(task.name, "in todo", task.defined_time);
     milliseconds = Number(task.defined_time);
   }
 
-  if (task.status === "in_progress" && task.paused_in) {
+  /* if (task.status === "paused") {
     const startedAt = new Date(String(task.started_at));
     const pausedIn = new Date(String(task.paused_in));
     const diff = Number(pausedIn) - Number(startedAt);
@@ -29,14 +26,14 @@ const useFormattedTime = ({ task, used_in }: Props) => {
     milliseconds = remainingTime <= 0 ? 0 : remainingTime;
   }
 
-  if (task.status === "in_progress" && !task.paused_in) {
+  if (task.status === "continuing") {
     const startedAt = new Date(String(task.started_at));
-    const currentTime = Date.now();
-    const diff = Number(currentTime) - Number(startedAt);
+    const pausedIn = new Date(String(task.paused_in));
+    const diff = Number(pausedIn) - Number(startedAt);
     const remainingTime = Number(task.defined_time) - diff;
 
     milliseconds = remainingTime <= 0 ? 0 : remainingTime;
-  }
+  } */
 
   /* Convert milliseconds to seconds */
   const totalSeconds = Math.floor(milliseconds / 1000);

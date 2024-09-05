@@ -5,9 +5,9 @@ const SideBar = () => {
 
   /* Menu Items */
   const items = [
-    { text: "Todas", link: "/" },
-    { text: "Pendientes", link: "/pendings" },
-    { text: "Completadas", link: "/completeds" },
+    { text: "Pendientes", link: "/" },
+    { text: "Completadas", link: "/complets" },
+    { text: "Todas", link: "/all" },
   ];
 
   return (

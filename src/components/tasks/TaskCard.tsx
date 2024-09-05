@@ -1,4 +1,3 @@
-import useFormattedTime from "@/hooks/useFormattedTime";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { Task } from "@/vite-env";
 import { useSortable } from "@dnd-kit/sortable";
@@ -13,7 +12,7 @@ interface Props {
 
 const TaskCard = ({ task }: Props) => {
   /* Hooks */
-  const { formattedTime } = useFormattedTime({ task, used_in: "card" });
+  // const { formattedTime } = useFormattedTime({ task, used_in: "card" });
   const dispatch = useDispatch();
 
   /* Sortable hook */
@@ -50,8 +49,9 @@ const TaskCard = ({ task }: Props) => {
       <div className="w-1/12 flex flex-col items-center">
         <div className="flex gap-x-1 justify-center items-center">
           <Clock size={20} />
-          <p>{formattedTime}</p>
         </div>
+
+        <p>{task.status}</p>
       </div>
     </Card>
   );

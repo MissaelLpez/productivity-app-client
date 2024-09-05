@@ -2,10 +2,9 @@ import useUpdateTask from "@/api/mutations/useUpdateTask";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
-import useCountdown from "@bradgarropy/use-countdown";
-import { CircleCheck, PauseCircle, PlayCircle, RotateCcw } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import TaskTimerActions from "./TaskTimerActions";
 
 const Task = () => {
   /* Modal state */
@@ -22,54 +21,11 @@ const Task = () => {
   });
   const dispatch = useDispatch();
 
-  const { formatted } = useCountdown({
-    minutes,
-    seconds,
-    format: "mm:ss",
-    autoStart: !task?.paused_in && task?.status === "in_progress",
-    onCompleted: () => alert("Time over"),
-  });
+  const currentTime = Date.now();
 
   if (!task) {
     return null;
   }
-
-  const currentTime = Date.now();
-
-  /* Functions */
-  const startTask = () => {
-    updateTask({
-      variables: {
-        updateTaskInput: {
-          id: task.id,
-          started_at: currentTime,
-          status: "in_progress",
-        },
-      },
-    });
-  };
-
-  const pauseTask = () => {
-    updateTask({
-      variables: {
-        updateTaskInput: {
-          id: task.id,
-          paused_in: currentTime,
-        },
-      },
-    });
-  };
-
-  const continueTask = () => {
-    updateTask({
-      variables: {
-        updateTaskInput: {
-          id: task.id,
-          paused_in: null,
-        },
-      },
-    });
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
@@ -91,44 +47,12 @@ const Task = () => {
           </div>
 
           <div className="mb-8 w-64 h-64 bg-transparent border-8 border-primary-500 rounded-full flex justify-center items-center">
-            <p className="text-3xl">{formatted}</p>
+            <p className="text-3xl">
+              {minutes}:{seconds}
+            </p>
           </div>
 
-          <div className="flex gap-x-5">
-            <RotateCcw
-              size={50}
-              className="cursor-pointer text-primary-200 hover:text-primary-700"
-            />
-
-            {task.status === "todo" && (
-              <PlayCircle
-                onClick={startTask}
-                size={50}
-                className="cursor-pointer text-primary-200 hover:text-primary-700"
-              />
-            )}
-
-            {task.status === "in_progress" && !task.paused_in && (
-              <PauseCircle
-                onClick={pauseTask}
-                size={50}
-                className="cursor-pointer text-primary-200 hover:text-primary-700"
-              />
-            )}
-
-            {task.status === "in_progress" && task.paused_in && (
-              <PlayCircle
-                onClick={continueTask}
-                size={50}
-                className="cursor-pointer text-primary-200 hover:text-primary-700"
-              />
-            )}
-
-            <CircleCheck
-              size={50}
-              className="cursor-pointer text-primary-200 hover:text-primary-700"
-            />
-          </div>
+          <TaskTimerActions task={task} />
         </div>
       </DialogContent>
     </Dialog>

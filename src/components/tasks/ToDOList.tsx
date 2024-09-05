@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 
-const TaskList = () => {
+const ToDoList = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -25,8 +25,8 @@ const TaskList = () => {
     })
   );
 
-  const { tasks } = useGetTasks();
-  const [list, setList] = useState(tasks);
+  const { showInTodoList: todo } = useGetTasks();
+  const [list, setList] = useState(todo);
   const { reorderTasks } = useReorderTaskList();
 
   /* execute in drag end */
@@ -51,10 +51,10 @@ const TaskList = () => {
   };
 
   useEffect(() => {
-    setList(tasks);
-  }, [tasks]);
+    setList(todo);
+  }, [todo, list]);
 
-  return tasks.length ? (
+  return todo.length ? (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
@@ -75,4 +75,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default ToDoList;

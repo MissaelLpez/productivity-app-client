@@ -1,4 +1,4 @@
-import { GetAllTasksData, Stats } from "@/vite-env";
+import { GetAllTasksData, Stats, Task } from "@/vite-env";
 import { gql, useSuspenseQuery } from "@apollo/client";
 
 export const GET_ALL_TASKS = gql`
@@ -25,8 +25,14 @@ const useGetTasks = () => {
   const tasks = data.getAllTasks;
 
   /* Get task stats */
-  const completed = tasks.filter((task) => task.status === "completed").length;
-  const todo = tasks.filter((task) => task.status === "todo").length;
+  const completed: Task[] = tasks.filter((task) => task.status === "completed");
+  const todo: Task[] = tasks.filter((task) => task.status === "todo");
+  const inProgress: Task[] = tasks.filter(
+    (task) => task.status === "in_progress"
+  );
+  const showInTodoList: Task[] = tasks.filter((task) =>
+    ["continuing", "paused", "todo"].includes(task.status)
+  );
 
   const rangTime = tasks.reduce((acc, act) => {
     const diff = Number(act.completed_at) - Number(act.started_at);
@@ -43,9 +49,16 @@ const useGetTasks = () => {
     seconds,
   };
 
-  const stats: Stats = { completed, todo, focusedTime };
+  const stats: Stats = {
+    completed: completed.length,
+    todo: todo.length,
+    inProgress: inProgress.length,
+    focusedTime,
+  };
 
-  return { tasks, stats };
+  console.log(tasks);
+
+  return { tasks, todo, inProgress, showInTodoList, stats };
 };
 
 export default useGetTasks;
