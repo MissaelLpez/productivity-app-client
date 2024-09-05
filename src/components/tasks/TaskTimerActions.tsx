@@ -24,6 +24,8 @@ const TaskTimerActions = ({ taskId }: Props) => {
 
   /* Functions */
   const update = (updateTaskInput: UpdateTaskInput) => {
+    console.log(updateTaskInput.status);
+
     if (updateTaskInput.status === "in_progress" && stats.inProgress > 0) {
       return alert(
         "Ya hay una tarea en progreso. Terminala on pausala para empezar una nueva"

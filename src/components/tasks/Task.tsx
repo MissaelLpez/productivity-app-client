@@ -1,8 +1,10 @@
 import useFormattedTime from "@/hooks/useFormattedTime";
+import useGetTaskById from "@/hooks/useGetTaskById";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import TaskCountdown from "./TaskCountdown";
 import TaskTimerActions from "./TaskTimerActions";
 
 const Task = () => {
@@ -10,16 +12,16 @@ const Task = () => {
   const isOpen = useSelector((state: RootState) => state.modals.openTask);
 
   /* Task data */
-  const task = useSelector((state: RootState) => state.modals.task);
+  const taskInRedux = useSelector((state: RootState) => state.modals.task);
+
+  const { task } = useGetTaskById(Number(taskInRedux?.id));
 
   /* Hooks */
   const { minutes, seconds } = useFormattedTime({
-    task,
-    used_in: "timer",
+    taskId: Number(task?.id),
   });
-  const dispatch = useDispatch();
 
-  /* const currentTime = Date.now(); */
+  const dispatch = useDispatch();
 
   if (!task) {
     return null;
@@ -45,9 +47,13 @@ const Task = () => {
           </div>
 
           <div className="mb-8 w-64 h-64 bg-transparent border-8 border-primary-500 rounded-full flex justify-center items-center">
-            <p className="text-3xl">
-              {minutes}:{seconds}
-            </p>
+            {task.status === "in_progress" || task.status === "continuing" ? (
+              <TaskCountdown taskId={task.id} />
+            ) : (
+              <p className="text-3xl text-dark dark:text-white">
+                {minutes}:{seconds}s
+              </p>
+            )}
           </div>
 
           <TaskTimerActions taskId={task.id} />

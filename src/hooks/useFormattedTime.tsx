@@ -1,41 +1,17 @@
-import { Task } from "@/vite-env";
+import useGetTaskById from "./useGetTaskById";
 
 interface Props {
-  task: Task | null;
-  used_in: "card" | "timer";
+  taskId: number;
 }
 
-const useFormattedTime = ({ task, used_in }: Props) => {
+const useFormattedTime = ({ taskId }: Props) => {
+  const { task } = useGetTaskById(taskId);
+
   if (!task) {
     return { formattedTime: "" };
   }
 
-  let milliseconds = 0;
-
-  if (task.status === "todo" || used_in === "card") {
-    console.log(task.name, "in todo", task.defined_time);
-    milliseconds = Number(task.defined_time);
-  }
-
-  /* if (task.status === "paused") {
-    const startedAt = new Date(String(task.started_at));
-    const pausedIn = new Date(String(task.paused_in));
-    const diff = Number(pausedIn) - Number(startedAt);
-    const remainingTime = Number(task.defined_time) - diff;
-
-    milliseconds = remainingTime <= 0 ? 0 : remainingTime;
-  }
-
-  if (task.status === "continuing") {
-    const startedAt = new Date(String(task.started_at));
-    const pausedIn = new Date(String(task.paused_in));
-    const diff = Number(pausedIn) - Number(startedAt);
-    const remainingTime = Number(task.defined_time) - diff;
-
-    milliseconds = remainingTime <= 0 ? 0 : remainingTime;
-  } */
-
-  /* Convert milliseconds to seconds */
+  const milliseconds = Number(task.defined_time);
   const totalSeconds = Math.floor(milliseconds / 1000);
 
   /* Calculate hours, minutes, and seconds */
