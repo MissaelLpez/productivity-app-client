@@ -2,9 +2,10 @@ import { setOpenTask } from "@/store/slices/modalSlice";
 import { Task } from "@/vite-env";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Clock } from "lucide-react";
+import { Clock, PauseCircle } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Card } from "../ui/card";
+import TaskCountdown from "./TaskCountdown";
 
 interface Props {
   task: Task;
@@ -48,10 +49,17 @@ const TaskCard = ({ task }: Props) => {
       {/* Task actions */}
       <div className="w-1/12 flex flex-col items-center">
         <div className="flex gap-x-1 justify-center items-center">
-          <Clock size={20} />
-        </div>
+          {(task.status === "in_progress" || task.status === "continuing") && (
+            <div className="flex flex-col items-center justify-center gap-y-1">
+              <Clock size={30} />
+              <TaskCountdown size="text-sm" taskId={task.id} />
+            </div>
+          )}
 
-        <p>{task.status}</p>
+          {task.status === "paused" && <PauseCircle size={30} />}
+
+          {task.status === "todo" && <Clock size={30} />}
+        </div>
       </div>
     </Card>
   );

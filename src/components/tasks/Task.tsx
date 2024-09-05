@@ -17,7 +17,7 @@ const Task = () => {
   const { task } = useGetTaskById(Number(taskInRedux?.id));
 
   /* Hooks */
-  const { minutes, seconds } = useFormattedTime({
+  const { formattedTime, minutes, seconds } = useFormattedTime({
     task,
   });
 
@@ -51,7 +51,7 @@ const Task = () => {
               <TaskCountdown taskId={task.id} />
             ) : (
               <p className="text-3xl text-dark dark:text-white">
-                {minutes}:{seconds}
+                {formattedTime}
               </p>
             )}
           </div>

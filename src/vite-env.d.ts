@@ -58,9 +58,9 @@ export interface UpdateTaskInput {
   status?: "todo" | "in_progress" | "paused" | "continuing" | "completed";
   defined_time?: string;
   redefined_time?: string;
-  started_at?: number;
-  finish_at?: number;
-  completed_at?: string | null;
+  started_at?: number | null;
+  finish_in?: number | null;
+  completed_at?: number | null;
   paused_in?: number | null;
   list_number?: number;
 }

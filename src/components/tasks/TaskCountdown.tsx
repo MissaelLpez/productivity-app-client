@@ -3,9 +3,10 @@ import useGetTaskById from "@/hooks/useGetTaskById";
 
 interface Props {
   taskId: number;
+  size?: string;
 }
 
-const TaskCountdown = ({ taskId }: Props) => {
+const TaskCountdown = ({ size = "text-3xl", taskId }: Props) => {
   const { task } = useGetTaskById(taskId);
 
   const targetTime = new Date(String(task?.finish_in));
@@ -21,7 +22,7 @@ const TaskCountdown = ({ taskId }: Props) => {
 
   return (
     <div>
-      <p className="text-3xl text-dark dark:text-white">
+      <p className={`${size} text-dark dark:text-white`}>
         {formatTime(minutes)}:{formatTime(seconds)}
       </p>
     </div>

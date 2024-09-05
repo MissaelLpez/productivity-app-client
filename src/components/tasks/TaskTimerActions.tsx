@@ -2,8 +2,10 @@ import useUpdateTask from "@/api/mutations/useUpdateTask";
 import useGetTasks from "@/api/queries/useGetTasks";
 import useCountdown from "@/hooks/useCountdown";
 import useGetTaskById from "@/hooks/useGetTaskById";
+import { setOpenTask } from "@/store/slices/modalSlice";
 import { UpdateTaskInput } from "@/vite-env";
 import { CircleCheck, PauseCircle, PlayCircle, RotateCcw } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 interface Props {
   taskId: number;
@@ -14,6 +16,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
   const { task } = useGetTaskById(taskId);
   const { data } = useGetTasks();
   const { mutate: updateTask } = useUpdateTask();
+  const dispatch = useDispatch();
 
   const currentTime = Date.now();
 
@@ -59,10 +62,22 @@ const TaskTimerActions = ({ taskId }: Props) => {
 
   return (
     <div className="flex gap-x-5">
-      <RotateCcw
-        size={50}
-        className="cursor-pointer text-primary-200 hover:text-primary-700"
-      />
+      {task.status !== "todo" && (
+        <RotateCcw
+          onClick={() =>
+            update({
+              id: task.id,
+              started_at: null,
+              status: "todo",
+              finish_in: null,
+              paused_in: null,
+              redefined_time: task.defined_time,
+            })
+          }
+          size={50}
+          className="cursor-pointer text-primary-200 hover:text-primary-700"
+        />
+      )}
 
       {/* Start task */}
       {task.status === "todo" && (
@@ -107,10 +122,21 @@ const TaskTimerActions = ({ taskId }: Props) => {
         />
       )}
 
-      <CircleCheck
-        size={50}
-        className="cursor-pointer text-primary-200 hover:text-primary-700"
-      />
+      {task.status !== "todo" && (
+        <CircleCheck
+          onClick={() => {
+            update({
+              id: task.id,
+              status: "completed",
+              completed_at: currentTime,
+            });
+
+            dispatch(setOpenTask(null));
+          }}
+          size={50}
+          className="cursor-pointer text-primary-200 hover:text-primary-700"
+        />
+      )}
     </div>
   );
 };

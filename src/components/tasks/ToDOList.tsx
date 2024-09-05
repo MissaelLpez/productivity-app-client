@@ -63,7 +63,7 @@ const ToDoList = () => {
     return null;
   }
 
-  const { todo } = data;
+  const { todo, stats } = data;
 
   return todo.length ? (
     <DndContext
@@ -85,7 +85,9 @@ const ToDoList = () => {
       </SortableContext>
     </DndContext>
   ) : (
-    <h3 className="text-center text-xl font-bold my-10">No hay tareas</h3>
+    <h3 className="text-center text-xl font-bold my-10">
+      {stats.inProgress <= 0 && "No hay tareas"}
+    </h3>
   );
 };
 
