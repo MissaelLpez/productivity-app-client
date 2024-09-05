@@ -1,3 +1,4 @@
+import { setTaskData } from "@/store/slices/modalSlice";
 import { gql, useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { GET_ALL_TASKS } from "../queries/useGetTasks";
@@ -18,16 +19,15 @@ const UPDATE_TASK = gql`
   }
 `;
 
-const useUpdateTask = (type: "edit" | "status") => {
+const useUpdateTask = () => {
   const dispatch = useDispatch();
 
   const [updateTask, { data }] = useMutation(UPDATE_TASK, {
     refetchQueries: [{ query: GET_ALL_TASKS }],
+    onCompleted: () => {
+      dispatch(setTaskData(data));
+    },
   });
-
-  /* if (type === "status") {
-    dispatch(setOpenTask(data));
-  } */
 
   return { updateTask };
 };

@@ -29,10 +29,13 @@ export const modalSlice = createSlice({
       state.task = payload;
       state.openTask = !state.openTask;
     },
+    setTaskData: (state, { payload }) => {
+      state.task = payload;
+    },
   },
 });
 
-export const { setOpenCreateTask, setOpenEditTask, setOpenTask } =
+export const { setOpenCreateTask, setOpenEditTask, setOpenTask, setTaskData } =
   modalSlice.actions;
 
 export default modalSlice.reducer;

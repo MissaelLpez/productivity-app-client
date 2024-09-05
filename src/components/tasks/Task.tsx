@@ -14,7 +14,7 @@ const Task = () => {
   const task = useSelector((state: RootState) => state.modals.task);
 
   /* Hooks */
-  const { updateTask } = useUpdateTask("status");
+  const { updateTask } = useUpdateTask();
   const { formattedTime } = useFormattedTime({ task, used_in: "timer" });
   const dispatch = useDispatch();
 
