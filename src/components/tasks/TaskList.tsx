@@ -1,7 +1,14 @@
 import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
 import TaskCard from "@/components/tasks/TaskCard";
-import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -10,6 +17,14 @@ import {
 import { useEffect, useState } from "react";
 
 const TaskList = () => {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
   const { tasks } = useGetTasks();
   const [list, setList] = useState(tasks);
   const { reorderTasks } = useReorderTaskList();
@@ -40,7 +55,11 @@ const TaskList = () => {
   }, [tasks]);
 
   return tasks.length ? (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       {/* Sortable List */}
       <SortableContext items={list} strategy={verticalListSortingStrategy}>
         {/* Render task card component */}

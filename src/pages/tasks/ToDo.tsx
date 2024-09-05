@@ -1,6 +1,5 @@
 import AddTask from "@/components/tasks/AddTask";
 import TaskList from "@/components/tasks/TaskList";
-import TaskStats from "@/components/tasks/TaskStats";
 import { Helmet } from "react-helmet";
 
 const ToDo = () => {
@@ -12,7 +11,6 @@ const ToDo = () => {
       </Helmet>
 
       <AddTask />
-      <TaskStats />
       <TaskList />
     </div>
   );
