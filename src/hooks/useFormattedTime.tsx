@@ -26,7 +26,16 @@ const useFormattedTime = ({ task, used_in }: Props) => {
     const diff = Number(pausedIn) - Number(startedAt);
     const remainingTime = Number(task.defined_time) - diff;
 
-    milliseconds = remainingTime;
+    milliseconds = remainingTime <= 0 ? 0 : remainingTime;
+  }
+
+  if (task.status === "in_progress" && !task.paused_in) {
+    const startedAt = new Date(String(task.started_at));
+    const currentTime = Date.now();
+    const diff = Number(currentTime) - Number(startedAt);
+    const remainingTime = Number(task.defined_time) - diff;
+
+    milliseconds = remainingTime <= 0 ? 0 : remainingTime;
   }
 
   /* Convert milliseconds to seconds */
@@ -36,6 +45,7 @@ const useFormattedTime = ({ task, used_in }: Props) => {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
+  const totalMinutes = minutes + hours * 60;
 
   /* Format to two digits */
   const formattedHours = String(hours).padStart(2, "0");
@@ -51,7 +61,7 @@ const useFormattedTime = ({ task, used_in }: Props) => {
         )}:${formattedMinutes}:${formattedSeconds}`
       : `${formattedMinutes}:${formattedSeconds}`;
 
-  return { formattedTime };
+  return { formattedTime, minutes: totalMinutes, seconds };
 };
 
 export default useFormattedTime;

@@ -2,6 +2,7 @@ import useUpdateTask from "@/api/mutations/useUpdateTask";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
+import useCountdown from "@bradgarropy/use-countdown";
 import { CircleCheck, PauseCircle, PlayCircle, RotateCcw } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
@@ -15,8 +16,19 @@ const Task = () => {
 
   /* Hooks */
   const { updateTask } = useUpdateTask();
-  const { formattedTime } = useFormattedTime({ task, used_in: "timer" });
+  const { minutes, seconds } = useFormattedTime({
+    task,
+    used_in: "timer",
+  });
   const dispatch = useDispatch();
+
+  const { formatted } = useCountdown({
+    minutes,
+    seconds,
+    format: "mm:ss",
+    autoStart: !task?.paused_in && task?.status === "in_progress",
+    onCompleted: () => alert("Time over"),
+  });
 
   if (!task) {
     return null;
@@ -79,7 +91,7 @@ const Task = () => {
           </div>
 
           <div className="mb-8 w-64 h-64 bg-transparent border-8 border-primary-500 rounded-full flex justify-center items-center">
-            <p className="text-3xl">{formattedTime}</p>
+            <p className="text-3xl">{formatted}</p>
           </div>
 
           <div className="flex gap-x-5">

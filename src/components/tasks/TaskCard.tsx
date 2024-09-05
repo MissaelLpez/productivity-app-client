@@ -39,7 +39,7 @@ const TaskCard = ({ task }: Props) => {
       {/* Task name and description */}
       <div className="w-10/12">
         <p className="text-xl first-letter:uppercase tracking-wide font-bold mb-6">
-          {task.name}
+          {task.id} {task.name}
         </p>
         <p className="text-base truncate overflow-hidden first-letter:uppercase tracking-wide">
           {task.description}
