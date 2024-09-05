@@ -5,7 +5,6 @@ import ToDoList from "@/components/tasks/ToDOList";
 import { Helmet } from "react-helmet";
 
 const ToDo = () => {
-  //const { stats, inProgress } = useGetTasks();
   const { data } = useGetTasks();
 
   if (!data) {

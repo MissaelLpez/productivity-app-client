@@ -32,6 +32,10 @@ export interface CreateTaskResponse {
   createTask: Task;
 }
 
+export interface ReorderTaskResponse {
+  reorderTasks: Task[];
+}
+
 export interface Stats {
   completed: number;
   todo: number;
@@ -61,4 +65,9 @@ export interface CreateTaskInput {
   name: string;
   description: string;
   defined_time: string;
+}
+
+export interface NewOrderInput {
+  id: number;
+  list_number: number;
 }

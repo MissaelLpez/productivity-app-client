@@ -1,3 +1,4 @@
+import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
 import {
   closestCenter,
@@ -26,8 +27,8 @@ const ToDoList = () => {
 
   const { data } = useGetTasks();
 
-  const [list, setList] = useState(data?.actionableTasks);
-  // const { reorderTasks } = useReorderTaskList();
+  const [list, setList] = useState(data?.todo);
+  const { mutate: reorderTasks } = useReorderTaskList();
 
   /* execute in drag end */
   const handleDragEnd = (event: DragEndEvent) => {
@@ -43,28 +44,28 @@ const ToDoList = () => {
         Number(newIndex)
       );
 
-      /* const newArray = newOrder.map((task, index) => ({
+      const newArray = newOrder.map((task, index) => ({
         id: task.id,
         list_number: index + 1,
       }));
 
-      reorderTasks({ variables: { newOrder: newArray } }); */
+      reorderTasks({ newOrder: newArray });
 
       return newOrder;
     });
   };
 
   useEffect(() => {
-    setList(data?.actionableTasks);
-  }, [data?.actionableTasks]);
+    setList(data?.todo);
+  }, [data?.todo]);
 
   if (!data) {
     return null;
   }
 
-  const { actionableTasks } = data;
+  const { todo } = data;
 
-  return actionableTasks.length ? (
+  return todo.length ? (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
@@ -72,7 +73,7 @@ const ToDoList = () => {
     >
       {/* Sortable List */}
       <SortableContext
-        items={list || actionableTasks}
+        items={list || todo}
         strategy={verticalListSortingStrategy}
       >
         {/* Render task card component */}

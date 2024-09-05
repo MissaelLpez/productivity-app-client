@@ -27,11 +27,11 @@ const gqlRequest = async () => {
   const { getAllTasks: tasks } = data;
 
   const all = tasks;
-  const todo = tasks.filter((task) => task.status === "todo");
-  const inProgress = tasks.filter((task) => task.status === "in_progress");
-
-  const actionableTasks = tasks.filter((task) =>
-    ["paused", "continuing", "todo"].includes(task.status)
+  const todo = tasks.filter(
+    (task) => task.status === "todo" || task.status === "paused"
+  );
+  const inProgress = tasks.filter(
+    (task) => task.status === "in_progress" || task.status === "continuing"
   );
 
   const stats: Stats = {
@@ -41,7 +41,7 @@ const gqlRequest = async () => {
     focusedTime: { hours: 0, minutes: 0, seconds: 0 },
   };
 
-  return { all, todo, inProgress, actionableTasks, stats };
+  return { all, todo, inProgress, stats };
 };
 
 const useGetTasks = () => {
