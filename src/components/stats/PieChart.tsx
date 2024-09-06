@@ -35,7 +35,7 @@ const PieChart = () => {
   ];
 
   return (
-    <div className="col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
+    <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
       <div className="flex flex-col w-full">
         <p className="text-xl font-bold my-5">
           Tareas completadas por duracion

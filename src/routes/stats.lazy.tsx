@@ -25,25 +25,37 @@ function Stats() {
   }
 
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-3 gap-5">
-      <div className="flex flex-col border border-primary-200 items-center justify-center text-center">
+    <div className="grid grid-cols-3 gap-5">
+      <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
         <p>Tarea mas tardada en completarse</p>
         <p>{stats.longestTask.name}</p>
       </div>
 
-      <div className="flex flex-col border border-primary-200 items-center justify-center text-center">
+      <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
         <p>Tarea mas rapida en completarse</p>
         <p>{stats.shortestTask.name}</p>
       </div>
 
-      <div className="flex flex-col border border-primary-200 items-center justify-center text-center">
+      <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
         <p>Tiempo promedio en completar tareas</p>
         <p>{formattedTime}</p>
       </div>
 
-      <BarChart />
-
       <PieChart />
+
+      <BarChart week={stats.tasksCompletedByWeek[0]} isCurrent />
+
+      {stats.tasksCompletedByWeek.length > 1 && (
+        <>
+          <p className="mt-10 mb-5 text-2xl">Semanas anteriores</p>
+
+          {stats.tasksCompletedByWeek.slice(1).map((week) => (
+            <>
+              <BarChart week={week} />
+            </>
+          ))}
+        </>
+      )}
     </div>
   );
 }

@@ -33,16 +33,18 @@ const Task = () => {
   const border =
     task.status !== "completed" ? "border-primary-500" : "border-green-500";
 
+  console.log(task.status);
+
   return (
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
-      <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-3/4 w-11/12 border-primary-200">
+      <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-11/12 w-11/12 border-primary-200">
         <DialogHeader>
-          <div className="flex flex-col items-center justify-center">
-            <DialogTitle className="text-lg font-medium">
+          <div className="flex flex-col items-center justify-center mb-10">
+            <DialogTitle className="text-xl font-medium">
               Detalles de la Tarea
             </DialogTitle>
 
-            {task.status !== "completed" && (
+            {(task.status === "paused" || task.status === "todo") && (
               <div className="flex gap-5 mt-2">
                 <TrashIcon
                   onClick={() => deleteTask({ taskId: task.id })}
@@ -69,7 +71,7 @@ const Task = () => {
           </div>
 
           <div
-            className={`mb-8 w-64 h-64 bg-transparent border-8 ${border} rounded-full flex justify-center items-center`}
+            className={`mb-10 w-64 h-64 bg-transparent border-8 ${border} rounded-full flex justify-center items-center`}
           >
             {task.status === "in_progress" || task.status === "continuing" ? (
               <TaskCountdown taskId={task.id} />
@@ -84,7 +86,11 @@ const Task = () => {
             <p className="text-2xl">Completada</p>
           )}
 
-          {task.status !== "completed" && <TaskTimerActions taskId={task.id} />}
+          <div className="my-10">
+            {task.status !== "completed" && (
+              <TaskTimerActions taskId={task.id} />
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
