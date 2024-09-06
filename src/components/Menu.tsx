@@ -13,7 +13,7 @@ const Menu = () => {
 
   const items = [
     { text: "Pendientes", link: "/" },
-    { text: "Completadas", link: "/complets" },
+    { text: "Completadas", link: "/completed" },
     { text: "Todas", link: "/all" },
   ];
 

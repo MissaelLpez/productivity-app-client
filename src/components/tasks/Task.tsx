@@ -27,6 +27,9 @@ const Task = () => {
     return null;
   }
 
+  const border =
+    task.status !== "completed" ? "border-primary-500" : "border-green-500";
+
   return (
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
       <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-3/4 w-11/12 border-primary-200">
@@ -46,7 +49,9 @@ const Task = () => {
             </p>
           </div>
 
-          <div className="mb-8 w-64 h-64 bg-transparent border-8 border-primary-500 rounded-full flex justify-center items-center">
+          <div
+            className={`mb-8 w-64 h-64 bg-transparent border-8 ${border} rounded-full flex justify-center items-center`}
+          >
             {task.status === "in_progress" || task.status === "continuing" ? (
               <TaskCountdown taskId={task.id} />
             ) : (
@@ -56,7 +61,11 @@ const Task = () => {
             )}
           </div>
 
-          <TaskTimerActions taskId={task.id} />
+          {task.status === "completed" && (
+            <p className="text-2xl">Completada</p>
+          )}
+
+          {task.status !== "completed" && <TaskTimerActions taskId={task.id} />}
         </div>
       </DialogContent>
     </Dialog>

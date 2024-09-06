@@ -15,6 +15,7 @@ export const GET_ALL_TASKS = gql`
       started_at
       finish_in
       completed_at
+      remaining_time
       paused_in
       list_number
     }
@@ -29,6 +30,7 @@ const gqlRequest = async () => {
   const { getAllTasks: tasks } = data;
 
   const all = tasks;
+  const completed = tasks.filter((elm) => elm.status === "completed");
   const todo = tasks.filter(
     (task) => task.status === "todo" || task.status === "paused"
   );
@@ -36,14 +38,18 @@ const gqlRequest = async () => {
     (task) => task.status === "in_progress" || task.status === "continuing"
   );
 
+  const focusedTime = completed.reduce((acc, act) => {
+    return acc + (Number(act.defined_time) - Number(act.remaining_time));
+  }, 0);
+
   const stats: Stats = {
-    completed: 0,
-    todo: todo.length,
+    completed: completed.length,
+    todo: todo.length + inProgress.length,
     inProgress: inProgress.length,
-    focusedTime: { hours: 0, minutes: 0, seconds: 0 },
+    focusedTime,
   };
 
-  return { all, todo, inProgress, stats };
+  return { all, completed, todo, inProgress, stats };
 };
 
 const useGetTasks = () => {

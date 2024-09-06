@@ -18,6 +18,7 @@ export interface Task {
   started_at: string | null;
   finish_in: string | null;
   completed_at: string | null;
+  remaining_time: string | null;
   paused_in: string | null;
   list_number: number;
 }
@@ -42,13 +43,7 @@ export interface Stats {
   completed: number;
   todo: number;
   inProgress: number;
-  focusedTime: FocusedTime;
-}
-
-export interface FocusedTime {
-  hours: number;
-  minutes: number;
-  seconds: number;
+  focusedTime: string | number;
 }
 
 export interface UpdateTaskInput {
@@ -58,6 +53,7 @@ export interface UpdateTaskInput {
   status?: "todo" | "in_progress" | "paused" | "continuing" | "completed";
   defined_time?: string;
   redefined_time?: string;
+  remaining_time?: string;
   started_at?: number | null;
   finish_in?: number | null;
   completed_at?: number | null;

@@ -27,11 +27,12 @@ const TaskCountdown = ({ size = "text-3xl", taskId }: Props) => {
           id: Number(task?.id),
           status: "completed",
           completed_at: currentTime,
+          remaining_time: "0",
         },
       });
       dispatch(setOpenTask(null));
     }
-  }, [currentTime, dispatch, hours, minutes, seconds, task?.id, updateTask]);
+  }, []);
 
   const formatTime = (time: number | undefined) =>
     Number(time).toString().padStart(2, "0");

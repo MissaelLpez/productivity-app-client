@@ -42,17 +42,6 @@ const TaskTimerActions = ({ taskId }: Props) => {
       );
     }
 
-    if (updateTaskInput.status === "paused") {
-      updateTask({
-        updateTaskInput: {
-          ...updateTaskInput,
-          redefined_time: String(difference),
-        },
-      });
-
-      return;
-    }
-
     updateTask({ updateTaskInput });
 
     return;
@@ -99,6 +88,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             update({
               id: task.id,
               status: "paused",
+              redefined_time: String(difference),
             })
           }
           size={50}
@@ -127,6 +117,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
               id: task.id,
               status: "completed",
               completed_at: currentTime,
+              remaining_time: String(difference),
             });
 
             dispatch(setOpenTask(null));

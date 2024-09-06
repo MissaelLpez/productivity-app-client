@@ -2,7 +2,7 @@ import { setOpenTask } from "@/store/slices/modalSlice";
 import { Task } from "@/vite-env";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Clock, PauseCircle } from "lucide-react";
+import { CircleCheck, Clock, PauseCircle } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Card } from "../ui/card";
 import TaskCountdown from "./TaskCountdown";
@@ -59,6 +59,8 @@ const TaskCard = ({ task }: Props) => {
           {task.status === "paused" && <PauseCircle size={30} />}
 
           {task.status === "todo" && <Clock size={30} />}
+
+          {task.status === "completed" && <CircleCheck size={30} />}
         </div>
       </div>
     </Card>

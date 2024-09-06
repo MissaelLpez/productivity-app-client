@@ -2,14 +2,25 @@ import { Task } from "@/vite-env";
 
 interface Props {
   task: Task | null | undefined;
+  time?: number;
+  inStats?: boolean;
 }
 
-const useFormattedTime = ({ task }: Props) => {
-  if (!task) {
+const useFormattedTime = ({ task, time = 0, inStats = false }: Props) => {
+  if (!task && !inStats) {
     return { formattedTime: "" };
   }
 
-  const milliseconds = Number(task.redefined_time);
+  let milliseconds = Number(task?.redefined_time);
+
+  if (task?.status === "completed") {
+    milliseconds = Number(task?.defined_time) - Number(task?.remaining_time);
+  }
+
+  if (inStats) {
+    milliseconds = time;
+  }
+
   const totalSeconds = Math.floor(milliseconds / 1000);
 
   /* Calculate hours, minutes, and seconds */
