@@ -17,7 +17,7 @@ const Task = () => {
   const { task } = useGetTaskById(Number(taskInRedux?.id));
 
   /* Hooks */
-  const { formattedTime, minutes, seconds } = useFormattedTime({
+  const { formattedTime } = useFormattedTime({
     task,
   });
 

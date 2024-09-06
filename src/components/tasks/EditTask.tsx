@@ -1,4 +1,3 @@
-import useCreateTask from "@/api/mutations/useCreateTask";
 import { setOpenEditTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
 import { DialogTitle } from "@radix-ui/react-dialog";
@@ -15,16 +14,16 @@ import {
 } from "../ui/select";
 
 const EditTask = () => {
-  const { createTask } = useCreateTask();
+  // const { createTask } = useCreateTask();
   const isOpen = useSelector((state: RootState) => state.modals.openEditTask);
   const dispatch = useDispatch();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = Object.fromEntries(new FormData(e.target as HTMLFormElement));
+    // const form = Object.fromEntries(new FormData(e.target as HTMLFormElement));
 
-    createTask({ variables: { createTaskInput: { ...form } } });
+    // createTask({ variables: { createTaskInput: { ...form } } });
 
     dispatch(setOpenEditTask());
   };

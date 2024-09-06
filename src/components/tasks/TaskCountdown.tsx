@@ -18,7 +18,7 @@ const TaskCountdown = ({ size = "text-3xl", taskId }: Props) => {
   const currentTime = Date.now();
   const targetTime = new Date(String(task?.finish_in));
 
-  const [days, hours, minutes, seconds] = useCountdown(Number(targetTime));
+  const [hours, minutes, seconds] = useCountdown(Number(targetTime));
 
   useEffect(() => {
     if (Number(hours) <= 0 && Number(minutes) <= 0 && Number(seconds) <= 0) {

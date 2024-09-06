@@ -22,9 +22,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
 
   const targetTime = new Date(String(task?.finish_in));
 
-  const [days, hours, minutes, seconds, difference] = useCountdown(
-    Number(targetTime)
-  );
+  const [, , , difference] = useCountdown(Number(targetTime));
 
   if (!data || !task) {
     return null;
