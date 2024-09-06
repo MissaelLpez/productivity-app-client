@@ -79,7 +79,7 @@ const CreateTask = () => {
           <div className="flex w-full gap-x-10">
             <label className="w-1/2">
               Tiempo
-              <Select name="defined_time" defaultValue="3600000">
+              <Select name="defined_time" defaultValue="1800000">
                 <SelectTrigger className="w-full mt-2 p-2 outline-none rounded-xl border border-primary-500">
                   <SelectValue placeholder="Definir tiempo" />
                 </SelectTrigger>

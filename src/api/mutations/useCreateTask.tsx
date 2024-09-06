@@ -44,6 +44,7 @@ const useCreateTask = () => {
     mutationFn: gqlRequest,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["all-tasks"] });
+      queryClient.refetchQueries({ queryKey: ["tasks-stats"] });
       dispatch(setOpenCreateTask());
     },
   });
