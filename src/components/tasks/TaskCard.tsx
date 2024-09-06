@@ -27,13 +27,18 @@ const TaskCard = ({ task }: Props) => {
     touchAction: "none",
   };
 
+  const border =
+    task.status === "continuing" || task.status === "in_progress"
+      ? "border border-primary-500"
+      : "border dark:border-transparent";
+
   return (
     <Card
       {...attributes}
       {...listeners}
       ref={setNodeRef}
       style={style}
-      className="flex justify-between p-5 rounded-xl cursor-pointer h-32 z-50"
+      className={`flex justify-between p-5 rounded-xl cursor-pointer h-32 z-50 ${border}`}
       onClick={() => dispatch(setOpenTask(task))}
     >
       {/* Task name and description */}
