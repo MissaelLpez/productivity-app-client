@@ -18,7 +18,9 @@ const TaskCountdown = ({ size = "text-3xl", taskId }: Props) => {
   const currentTime = Date.now();
   const targetTime = new Date(String(task?.finish_in));
 
-  const [hours, minutes, seconds] = useCountdown(Number(targetTime));
+  const [hours, minutes, seconds, difference] = useCountdown(
+    Number(targetTime)
+  );
 
   useEffect(() => {
     if (Number(hours) <= 0 && Number(minutes) <= 0 && Number(seconds) <= 0) {
@@ -32,7 +34,25 @@ const TaskCountdown = ({ size = "text-3xl", taskId }: Props) => {
       });
       dispatch(setOpenTask(null));
     }
-  }, []);
+  }, [hours, minutes, seconds]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      updateTask({
+        updateTaskInput: {
+          id: Number(task?.id),
+          status: "paused",
+          redefined_time: String(difference),
+        },
+      });
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [difference, task?.id, updateTask]);
 
   const formatTime = (time: number | undefined) =>
     Number(time).toString().padStart(2, "0");

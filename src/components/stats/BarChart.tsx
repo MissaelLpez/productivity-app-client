@@ -21,7 +21,7 @@ const BarChart = () => {
   }
 
   return (
-    <div className="col-span-3 flex flex-col border border-primary-200 items-center justify-center text-center">
+    <div className="col-span-2 flex flex-col border border-primary-200 items-center justify-center text-center">
       <div className="flex flex-col w-full">
         <p className="text-2xl font-bold my-5">Tareas completadas por dia</p>
         <ChartContainer config={chartConfig} className="min-h-[200px] w-full">

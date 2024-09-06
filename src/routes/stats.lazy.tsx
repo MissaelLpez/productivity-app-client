@@ -1,5 +1,6 @@
 import useGetStats from "@/api/queries/useGetStats";
 import BarChart from "@/components/stats/BarChart";
+import PieChart from "@/components/stats/PieChart";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
@@ -37,6 +38,8 @@ function Stats() {
       </div>
 
       <BarChart />
+
+      <PieChart />
     </div>
   );
 }
