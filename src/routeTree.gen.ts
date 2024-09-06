@@ -17,10 +17,16 @@ import { Route as TasksTaskIdImport } from './routes/tasks/$taskId'
 
 // Create Virtual Routes
 
+const StatsLazyImport = createFileRoute('/stats')()
 const CompletedLazyImport = createFileRoute('/completed')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const StatsLazyRoute = StatsLazyImport.update({
+  path: '/stats',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/stats.lazy').then((d) => d.Route))
 
 const CompletedLazyRoute = CompletedLazyImport.update({
   path: '/completed',
@@ -55,6 +61,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompletedLazyImport
       parentRoute: typeof rootRoute
     }
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/tasks/$taskId': {
       id: '/tasks/$taskId'
       path: '/tasks/$taskId'
@@ -70,6 +83,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   CompletedLazyRoute,
+  StatsLazyRoute,
   TasksTaskIdRoute,
 })
 
@@ -83,6 +97,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/completed",
+        "/stats",
         "/tasks/$taskId"
       ]
     },
@@ -91,6 +106,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/completed": {
       "filePath": "completed.lazy.tsx"
+    },
+    "/stats": {
+      "filePath": "stats.lazy.tsx"
     },
     "/tasks/$taskId": {
       "filePath": "tasks/$taskId.tsx"

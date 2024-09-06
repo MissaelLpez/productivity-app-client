@@ -72,3 +72,31 @@ export interface NewOrderInput {
   id: number;
   list_number: number;
 }
+
+export interface TaskCategories {
+  short: number;
+  medium: number;
+  long: number;
+}
+
+export interface DayCount {
+  date: string;
+  count: number;
+}
+
+export interface WeekStats {
+  weekStart: string;
+  days: DayCount[];
+}
+
+export interface TaskStats {
+  shortestTask: Task;
+  longestTask: Task;
+  averageCompletionTime: number;
+  taskCategories: TaskCategories;
+  tasksCompletedByWeek: WeekStats[];
+}
+
+export interface TasksStatsResponse {
+  getStats: TaskStats;
+}
