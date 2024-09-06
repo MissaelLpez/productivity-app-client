@@ -22,6 +22,8 @@ function Completed() {
       ))}
     </div>
   ) : (
-    <div>No hay tareas Completadas</div>
+    <h3 className="text-center text-xl font-bold my-10">
+      No hay tareas Completadas
+    </h3>
   );
 }

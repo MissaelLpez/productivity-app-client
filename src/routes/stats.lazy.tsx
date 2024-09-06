@@ -17,7 +17,11 @@ function Stats() {
   });
 
   if (!stats) {
-    return null;
+    return (
+      <h3 className="text-center text-xl font-bold my-10">
+        Aun no hay estadisticas
+      </h3>
+    );
   }
 
   return (

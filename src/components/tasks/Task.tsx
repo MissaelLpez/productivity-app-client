@@ -1,7 +1,9 @@
+import useDeleteTask from "@/api/mutations/useDeleteTask";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import useGetTaskById from "@/hooks/useGetTaskById";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
+import { Edit, TrashIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import TaskCountdown from "./TaskCountdown";
@@ -20,6 +22,7 @@ const Task = () => {
   const { formattedTime } = useFormattedTime({
     task,
   });
+  const { mutate: deleteTask } = useDeleteTask();
 
   const dispatch = useDispatch();
 
@@ -34,9 +37,25 @@ const Task = () => {
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
       <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-3/4 w-11/12 border-primary-200">
         <DialogHeader>
-          <DialogTitle className="text-lg font-medium">
-            Detalles de la Tarea
-          </DialogTitle>
+          <div className="flex flex-col items-center justify-center">
+            <DialogTitle className="text-lg font-medium">
+              Detalles de la Tarea
+            </DialogTitle>
+
+            {task.status !== "completed" && (
+              <div className="flex gap-5 mt-2">
+                <TrashIcon
+                  onClick={() => deleteTask({ taskId: task.id })}
+                  size={30}
+                  className="cursor-pointer text-primary-200 hover:text-primary-900"
+                />
+                <Edit
+                  size={30}
+                  className="cursor-pointer text-primary-200 hover:text-primary-500"
+                />
+              </div>
+            )}
+          </div>
         </DialogHeader>
 
         <div className="flex flex-col items-center">

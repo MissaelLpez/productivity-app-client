@@ -35,6 +35,10 @@ export interface CreateTaskResponse {
   createTask: Task;
 }
 
+export interface DeleteTaskResponse {
+  deleteTask: Task;
+}
+
 export interface ReorderTaskResponse {
   reorderTasks: Task[];
 }
@@ -53,7 +57,7 @@ export interface UpdateTaskInput {
   status?: "todo" | "in_progress" | "paused" | "continuing" | "completed";
   defined_time?: string;
   redefined_time?: string;
-  remaining_time?: string;
+  remaining_time?: string | null;
   started_at?: number | null;
   finish_in?: number | null;
   completed_at?: number | null;

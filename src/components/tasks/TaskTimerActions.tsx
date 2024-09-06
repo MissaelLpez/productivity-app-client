@@ -14,8 +14,8 @@ interface Props {
 const TaskTimerActions = ({ taskId }: Props) => {
   /* Hooks */
   const { task } = useGetTaskById(taskId);
-  const { data } = useGetTasks();
-  const { mutate: updateTask } = useUpdateTask();
+  const { data, isLoading, isFetching } = useGetTasks();
+  const { mutate: updateTask, isPending } = useUpdateTask();
   const dispatch = useDispatch();
 
   const currentTime = Date.now();
@@ -32,6 +32,10 @@ const TaskTimerActions = ({ taskId }: Props) => {
 
   /* Functions */
   const update = (updateTaskInput: UpdateTaskInput) => {
+    if (isPending || isLoading || isFetching) {
+      return;
+    }
+
     if (
       (updateTaskInput.status === "in_progress" ||
         updateTaskInput.status === "continuing") &&
@@ -59,10 +63,11 @@ const TaskTimerActions = ({ taskId }: Props) => {
               finish_in: null,
               paused_in: null,
               redefined_time: task.defined_time,
+              remaining_time: null,
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-700"
+          className="cursor-pointer text-primary-200 hover:text-primary-500"
         />
       )}
 
@@ -77,7 +82,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-700"
+          className="cursor-pointer text-primary-200 hover:text-primary-500"
         />
       )}
 
@@ -88,11 +93,13 @@ const TaskTimerActions = ({ taskId }: Props) => {
             update({
               id: task.id,
               status: "paused",
-              redefined_time: String(difference),
+              redefined_time: !isNaN(Number(difference))
+                ? String(difference)
+                : task.defined_time,
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-700"
+          className="cursor-pointer text-primary-200 hover:text-primary-500"
         />
       )}
 
@@ -106,7 +113,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-700"
+          className="cursor-pointer text-primary-200 hover:text-primary-500"
         />
       )}
 
@@ -117,13 +124,16 @@ const TaskTimerActions = ({ taskId }: Props) => {
               id: task.id,
               status: "completed",
               completed_at: currentTime,
-              remaining_time: String(difference),
+              remaining_time:
+                task.status !== "paused"
+                  ? String(difference)
+                  : String(task.redefined_time),
             });
 
             dispatch(setOpenTask(null));
           }}
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-700"
+          className="cursor-pointer text-primary-200 hover:text-primary-500"
         />
       )}
     </div>
