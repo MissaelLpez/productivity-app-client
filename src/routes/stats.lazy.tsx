@@ -9,12 +9,20 @@ export const Route = createLazyFileRoute("/stats")({
 });
 
 function Stats() {
-  const { data: stats } = useGetStats();
+  const { data: stats, isLoading, isFetching, isPending } = useGetStats();
   const { formattedTime } = useFormattedTime({
     task: null,
     time: stats?.averageCompletionTime,
     inStats: true,
   });
+
+  if (isLoading || isFetching || isPending) {
+    return (
+      <h3 className="text-center text-xl font-bold my-10">
+        Obteniendo datos...
+      </h3>
+    );
+  }
 
   if (!stats) {
     return (

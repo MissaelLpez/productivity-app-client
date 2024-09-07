@@ -17,7 +17,7 @@ import {
 } from "../ui/select";
 
 const EditTask = () => {
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutate: updateTask, isPending } = useUpdateTask();
   const taskInState = useSelector((state: RootState) => state.modals.task);
   const isOpen = useSelector((state: RootState) => state.modals.openEditTask);
   const dispatch = useDispatch();
@@ -148,7 +148,11 @@ const EditTask = () => {
             />
           </label>
 
-          <Button type="submit" className="my-5 mx-auto rounded-xl w-1/3">
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="my-5 mx-auto rounded-xl w-1/3"
+          >
             Guardar
           </Button>
         </form>

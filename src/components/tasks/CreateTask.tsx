@@ -16,7 +16,7 @@ import {
 } from "../ui/select";
 
 const CreateTask = () => {
-  const { mutate: createTask } = useCreateTask();
+  const { mutate: createTask, isPending } = useCreateTask();
   const isOpen = useSelector((state: RootState) => state.modals.openCreateTask);
   const dispatch = useDispatch();
 
@@ -112,7 +112,11 @@ const CreateTask = () => {
             />
           </label>
 
-          <Button type="submit" className="my-5 mx-auto rounded-xl w-1/3">
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="my-5 mx-auto rounded-xl w-1/3"
+          >
             Guardar
           </Button>
         </form>

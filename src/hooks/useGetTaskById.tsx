@@ -1,7 +1,7 @@
 import useGetTasks from "@/api/queries/useGetTasks";
 
 const useGetTaskById = (taskId: number) => {
-  const { data } = useGetTasks();
+  const { data, isLoading, isFetching } = useGetTasks();
 
   if (!data) {
     return { task: null };
@@ -11,7 +11,7 @@ const useGetTaskById = (taskId: number) => {
 
   const task = tasks.find((elm) => elm.id === taskId);
 
-  return { task };
+  return { task, isLoading: isLoading || isFetching };
 };
 
 export default useGetTaskById;

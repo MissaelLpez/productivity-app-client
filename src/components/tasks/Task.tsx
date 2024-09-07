@@ -16,13 +16,13 @@ const Task = () => {
   /* Task data */
   const taskInRedux = useSelector((state: RootState) => state.modals.task);
 
-  const { task } = useGetTaskById(Number(taskInRedux?.id));
+  const { task, isLoading } = useGetTaskById(Number(taskInRedux?.id));
 
   /* Hooks */
   const { formattedTime } = useFormattedTime({
     task,
   });
-  const { mutate: deleteTask } = useDeleteTask();
+  const { mutate: deleteTask, isPending } = useDeleteTask();
 
   const dispatch = useDispatch();
 
@@ -76,20 +76,26 @@ const Task = () => {
               <TaskCountdown taskId={task.id} />
             ) : (
               <p className="text-3xl text-dark dark:text-white">
-                {formattedTime}
+                {isLoading || isPending ? "--:--" : formattedTime}
               </p>
             )}
           </div>
 
-          {task.status === "completed" && (
-            <p className="text-2xl">Completada</p>
-          )}
+          {isLoading || isPending ? (
+            <div className="my-10"></div>
+          ) : (
+            <>
+              {task.status === "completed" && (
+                <p className="text-2xl">Completada</p>
+              )}
 
-          <div className="my-10">
-            {task.status !== "completed" && (
-              <TaskTimerActions taskId={task.id} />
-            )}
-          </div>
+              <div className="my-10">
+                {task.status !== "completed" && (
+                  <TaskTimerActions taskId={task.id} />
+                )}
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>
