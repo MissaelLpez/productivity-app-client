@@ -1,7 +1,7 @@
 import useDeleteTask from "@/api/mutations/useDeleteTask";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import useGetTaskById from "@/hooks/useGetTaskById";
-import { setOpenTask } from "@/store/slices/modalSlice";
+import { setOpenEditTask, setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
 import { Edit, TrashIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +33,6 @@ const Task = () => {
   const border =
     task.status !== "completed" ? "border-primary-500" : "border-green-500";
 
-  console.log(task.status);
-
   return (
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
       <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-11/12 w-11/12 border-primary-200">
@@ -52,6 +50,7 @@ const Task = () => {
                   className="cursor-pointer text-primary-200 hover:text-primary-900"
                 />
                 <Edit
+                  onClick={() => dispatch(setOpenEditTask())}
                   size={30}
                   className="cursor-pointer text-primary-200 hover:text-primary-500"
                 />

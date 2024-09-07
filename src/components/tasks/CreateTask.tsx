@@ -46,7 +46,7 @@ const CreateTask = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenCreateTask())}>
-      <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-1/2 w-11/12 border-primary-200">
+      <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-11/12 w-11/12 border-primary-200">
         <DialogHeader>
           <DialogTitle className="text-lg font-medium">
             Agregar Tarea
@@ -76,43 +76,41 @@ const CreateTask = () => {
             />
           </label>
 
-          <div className="flex w-full gap-x-10">
-            <label className="w-1/2">
-              Tiempo
-              <Select name="defined_time" defaultValue="1800000">
-                <SelectTrigger className="w-full mt-2 p-2 outline-none rounded-xl border border-primary-500">
-                  <SelectValue placeholder="Definir tiempo" />
-                </SelectTrigger>
-                <SelectContent className="text-white outline-none bg-white dark:bg-dark">
-                  <SelectItem value="1800000">30 mins.</SelectItem>
-                  <SelectItem value="2700000">45 mins.</SelectItem>
-                  <SelectItem value="3600000">1 hora</SelectItem>
-                </SelectContent>
-              </Select>
-            </label>
+          <label className="w-1/2">
+            Tiempo Predeterminado
+            <Select name="defined_time" defaultValue="1800000">
+              <SelectTrigger className="w-full mt-2 mb-4 p-2 outline-none rounded-xl border border-primary-500">
+                <SelectValue placeholder="Definir tiempo" />
+              </SelectTrigger>
+              <SelectContent className="text-white outline-none bg-white dark:bg-dark">
+                <SelectItem value="1800000">30 mins.</SelectItem>
+                <SelectItem value="2700000">45 mins.</SelectItem>
+                <SelectItem value="3600000">1 hora</SelectItem>
+              </SelectContent>
+            </Select>
+          </label>
 
-            <label className="w-1/2">
-              Definir minutos
-              <input
-                type="number"
-                name="custom_time"
-                placeholder="90"
-                className="bg-transparent border border-primary-500 rounded-xl p-2 w-full mt-2 mb-4 outline-none"
-                autoComplete="off"
-                title="Escribe un tiempo en minutos"
-                min={1}
-                max={120}
-                onChange={(e) => {
-                  if (Number(e.target.value) > 120) {
-                    e.target.value = "120";
-                  }
-                  if (Number(e.target.value) < 0) {
-                    e.target.value = "0";
-                  }
-                }}
-              />
-            </label>
-          </div>
+          <label className="w-1/2">
+            Tiempo Personalizado (minutos)
+            <input
+              type="number"
+              name="custom_time"
+              placeholder="90"
+              className="bg-transparent border border-primary-500 rounded-xl p-2 w-full mt-2 mb-4 outline-none"
+              autoComplete="off"
+              title="Escribe un tiempo en minutos"
+              min={1}
+              max={120}
+              onChange={(e) => {
+                if (Number(e.target.value) > 120) {
+                  e.target.value = "120";
+                }
+                if (Number(e.target.value) < 0) {
+                  e.target.value = "0";
+                }
+              }}
+            />
+          </label>
 
           <Button type="submit" className="my-5 mx-auto rounded-xl w-1/3">
             Guardar

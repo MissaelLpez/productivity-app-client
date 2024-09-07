@@ -57,7 +57,7 @@ const PieChart = () => {
             >
               {data.map((entry, index) => (
                 <Cell
-                  key={`cell-${index}`}
+                  key={`cell-${entry.name}-${index}`}
                   fill={COLORS[index % COLORS.length]}
                 />
               ))}
