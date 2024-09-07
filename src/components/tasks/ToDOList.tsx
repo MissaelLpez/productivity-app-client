@@ -1,5 +1,8 @@
 import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
+import useGetTasksByTime from "@/hooks/useGetTasksByTime";
+import { RootState } from "@/store/store";
+import { Task } from "@/vite-env";
 import {
   closestCenter,
   DndContext,
@@ -14,6 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import TaskCard from "./TaskCard";
 
 const ToDoList = () => {
@@ -25,9 +29,17 @@ const ToDoList = () => {
     })
   );
 
-  const { data } = useGetTasks();
+  const inProgressFilter = useSelector(
+    (state: RootState) => state.filters.inProgressFilter
+  );
 
-  const [list, setList] = useState(data?.todo);
+  const { data } = useGetTasks();
+  const { tasks, stats } = useGetTasksByTime({
+    status: "in_progress",
+    type: inProgressFilter,
+  });
+
+  const [list, setList] = useState<Task[]>(tasks);
   const { mutate: reorderTasks } = useReorderTaskList();
 
   /* execute in drag end */
@@ -56,26 +68,21 @@ const ToDoList = () => {
   };
 
   useEffect(() => {
-    setList(data?.todo);
-  }, [data?.todo]);
+    setList(tasks);
+  }, [tasks]);
 
   if (!data) {
     return null;
   }
 
-  const { todo, stats } = data;
-
-  return todo.length ? (
+  return tasks.length ? (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
       {/* Sortable List */}
-      <SortableContext
-        items={list || todo}
-        strategy={verticalListSortingStrategy}
-      >
+      <SortableContext items={list} strategy={verticalListSortingStrategy}>
         {/* Render task card component */}
         <div className="grid grid-cols-1 gap-y-4">
           {list?.map((elm) => (
@@ -86,7 +93,7 @@ const ToDoList = () => {
     </DndContext>
   ) : (
     <h3 className="text-center text-xl font-bold my-10">
-      {stats.inProgress <= 0 && "No hay tareas"}
+      {Number(stats?.inProgress) <= 0 && "No hay tareas"}
     </h3>
   );
 };
