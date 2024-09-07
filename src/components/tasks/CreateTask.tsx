@@ -82,7 +82,7 @@ const CreateTask = () => {
               <SelectTrigger className="w-full mt-2 mb-4 p-2 outline-none rounded-xl border border-primary-500">
                 <SelectValue placeholder="Definir tiempo" />
               </SelectTrigger>
-              <SelectContent className="text-white outline-none bg-white dark:bg-dark">
+              <SelectContent className="text-dark dark:text-white outline-none bg-white dark:bg-dark">
                 <SelectItem value="1800000">30 mins.</SelectItem>
                 <SelectItem value="2700000">45 mins.</SelectItem>
                 <SelectItem value="3600000">1 hora</SelectItem>

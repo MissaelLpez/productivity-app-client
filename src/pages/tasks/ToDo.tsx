@@ -29,7 +29,7 @@ const ToDo = () => {
         <meta name="description" content="Tareas Pendientes" />
       </Helmet>
 
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-between items-center">
         <FilterTasks type="in_progress" />
         <AddTask />
       </div>

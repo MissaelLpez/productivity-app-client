@@ -1,6 +1,7 @@
 import useGetStats from "@/api/queries/useGetStats";
 import BarChart from "@/components/stats/BarChart";
 import PieChart from "@/components/stats/PieChart";
+import StatCard from "@/components/tasks/StatCard";
 import useFormattedTime from "@/hooks/useFormattedTime";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Helmet } from "react-helmet";
@@ -11,9 +12,23 @@ export const Route = createLazyFileRoute("/stats")({
 
 function Stats() {
   const { data: stats, isLoading, isFetching, isPending } = useGetStats();
-  const { formattedTime } = useFormattedTime({
+  const { formattedTime: avgCompletion } = useFormattedTime({
     task: null,
     time: stats?.averageCompletionTime,
+    inStats: true,
+  });
+  const { formattedTime: longTime } = useFormattedTime({
+    task: null,
+    time:
+      Number(stats?.longestTask.defined_time) -
+      Number(stats?.longestTask.remaining_time),
+    inStats: true,
+  });
+  const { formattedTime: shortTime } = useFormattedTime({
+    task: null,
+    time:
+      Number(stats?.shortestTask.defined_time) -
+      Number(stats?.shortestTask.remaining_time),
     inStats: true,
   });
 
@@ -38,20 +53,23 @@ function Stats() {
         <meta name="description" content="Estadísticas de tus tareas" />
       </Helmet>
       <div className="grid grid-cols-3 gap-5">
-        <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
-          <p>Tarea mas tardada en completarse</p>
-          <p>{stats.longestTask.name}</p>
-        </div>
+        <StatCard
+          title="Tarea completada en el mayor tiempo"
+          value={longTime}
+          name={stats.longestTask.name}
+        />
 
-        <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
-          <p>Tarea mas rapida en completarse</p>
-          <p>{stats.shortestTask.name}</p>
-        </div>
+        <StatCard
+          title="Tarea completada en el menor tiempo"
+          value={shortTime}
+          name={stats.shortestTask.name}
+        />
 
-        <div className="col-span-3 xl:col-span-1 flex flex-col border border-primary-200 items-center justify-center text-center">
-          <p>Tiempo promedio en completar tareas</p>
-          <p>{formattedTime}</p>
-        </div>
+        <StatCard
+          title="Tiempo promedio en completar tareas"
+          value={avgCompletion}
+          name=""
+        />
 
         <PieChart />
 

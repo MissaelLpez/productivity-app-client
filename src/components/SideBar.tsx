@@ -17,7 +17,7 @@ const SideBar = () => {
           <Link
             key={i}
             to={elm.link}
-            className={`mb-3 tracking-wider px-4 py-1 rounded-xl hover:bg-primary-100 dark:hover:bg-primary-700 cursor-pointer ${
+            className={`truncate mb-3 tracking-wider px-4 py-1 rounded-xl hover:bg-primary-100 dark:hover:bg-primary-700 cursor-pointer ${
               pathname === elm.link
                 ? "bg-primary-100 dark:bg-primary-700"
                 : "bg-transparent"

@@ -1,3 +1,4 @@
+import useFormattedTime from "@/hooks/useFormattedTime";
 import { setOpenTask } from "@/store/slices/modalSlice";
 import { Task } from "@/vite-env";
 import { useSortable } from "@dnd-kit/sortable";
@@ -13,7 +14,11 @@ interface Props {
 
 const TaskCard = ({ task }: Props) => {
   /* Hooks */
-  // const { formattedTime } = useFormattedTime({ task, used_in: "card" });
+  const { formattedTime } = useFormattedTime({
+    task: null,
+    time: Number(task.defined_time),
+    inStats: true,
+  });
   const dispatch = useDispatch();
 
   /* Sortable hook */
@@ -38,15 +43,19 @@ const TaskCard = ({ task }: Props) => {
       {...listeners}
       ref={setNodeRef}
       style={style}
-      className={`flex justify-between p-5 rounded-xl cursor-pointer h-32 z-50 ${border}`}
+      className={`flex justify-between p-5 rounded-xl cursor-pointer h-40 z-50 ${border}`}
       onClick={() => dispatch(setOpenTask(task))}
     >
       {/* Task name and description */}
       <div className="w-10/12">
-        <p className="text-xl first-letter:uppercase tracking-wide font-bold mb-6">
+        <p className="text-xl first-letter:uppercase tracking-wide font-bold mb-2">
           {task.name}
         </p>
-        <p className="text-base truncate overflow-hidden first-letter:uppercase tracking-wide">
+        <p className="text-lg first-letter:uppercase tracking-wide font-medium mb-6">
+          {formattedTime}
+        </p>
+
+        <p className="text-base truncate overflow-hidden first-letter:uppercase tracking-wide font-b">
           {task.description}
         </p>
       </div>

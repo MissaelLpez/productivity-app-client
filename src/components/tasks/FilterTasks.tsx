@@ -38,7 +38,7 @@ const FilterTasks = ({ type }: Props) => {
   };
 
   return (
-    <div className="w-1/3">
+    <div className="w-full md:w-1/3 mb-5">
       <label className="w-full flex gap-x-2 items-center justify-center">
         <p className="mt-2 mb-4">Filtrar: </p>
         <Select
@@ -49,7 +49,7 @@ const FilterTasks = ({ type }: Props) => {
           <SelectTrigger className="w-full mt-2 mb-4 p-2 outline-none rounded-xl border border-primary-500">
             <SelectValue placeholder="Definir tiempo" />
           </SelectTrigger>
-          <SelectContent className="text-white outline-none bg-white dark:bg-dark">
+          <SelectContent className="text-dark dark:text-white outline-none bg-white dark:bg-dark">
             <SelectItem value="all">Todas las tareas</SelectItem>
             <SelectItem value="short">Tareas cortas</SelectItem>
             <SelectItem value="medium">Tareas medianas</SelectItem>

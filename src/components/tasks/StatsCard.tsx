@@ -15,7 +15,7 @@ const StatsCard = ({
   taskId = null,
 }: Props) => {
   return (
-    <Card className="text-center shadow-xl rounded-xl bg-gradient-to-t from-primary-200 dark:from-primary-600 from-10% via-transparent via-80% to-primary-700 to-90% border-0 min-h-32 break-words">
+    <Card className="text-center shadow-xl rounded-xl border-0 min-h-32 break-words">
       <div className="rounded-xl p-5 backdrop-blur-3xl w-full h-full">
         {isProgres && <p className="tracking-wider font-medium">En Progreso</p>}
 
