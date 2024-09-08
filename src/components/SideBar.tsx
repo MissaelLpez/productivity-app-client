@@ -1,11 +1,10 @@
 import useCreateManyTasks from "@/api/mutations/useCreateManyTasks";
-import useGetTasks from "@/api/queries/useGetTasks";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Button } from "./ui/button";
 
 const SideBar = () => {
   const { pathname } = useLocation();
-  const { data } = useGetTasks();
+
   const { mutate: createManyTasks, isPending } = useCreateManyTasks();
 
   /* Menu Items */
@@ -34,6 +33,7 @@ const SideBar = () => {
 
         <Button
           onClick={() => createManyTasks()}
+          disabled={isPending}
           className="rounded-xl bg-primary-700 fixed bottom-16"
         >
           Crear tareas aleatorias

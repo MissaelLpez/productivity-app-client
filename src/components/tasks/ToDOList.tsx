@@ -93,7 +93,7 @@ const ToDoList = () => {
     </DndContext>
   ) : (
     <h3 className="text-center text-xl font-bold my-10">
-      {Number(stats?.inProgress) <= 0 && "No hay tareas pendientes"}
+      {Number(stats?.inProgress) <= 0 && "Sin tareas pendientes"}
     </h3>
   );
 };
