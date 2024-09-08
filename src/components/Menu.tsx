@@ -1,3 +1,4 @@
+import useCreateManyTasks from "@/api/mutations/useCreateManyTasks";
 import { setOpenMenu } from "@/store/slices/menuSlice";
 import { RootState } from "@/store/store";
 import { Link, useLocation } from "@tanstack/react-router";
@@ -5,11 +6,13 @@ import { MenuIcon } from "lucide-react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useDispatch, useSelector } from "react-redux";
+import { Button } from "./ui/button";
 
 const Menu = () => {
   const isOpen = useSelector((state: RootState) => state.menu.menuOpen);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const { mutate: createManyTasks, isPending } = useCreateManyTasks();
 
   const items = [
     { text: "Pendientes", link: "/" },
@@ -40,6 +43,17 @@ const Menu = () => {
               {elm.text}
             </Link>
           ))}
+
+          <Button
+            onClick={() => {
+              createManyTasks();
+              dispatch(setOpenMenu());
+            }}
+            disabled={isPending}
+            className="text-xs rounded-xl bg-primary-700 fixed bottom-16"
+          >
+            Crear tareas aleatorias
+          </Button>
         </div>
       </Drawer>
     </div>
