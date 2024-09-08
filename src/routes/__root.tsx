@@ -4,7 +4,6 @@ import ModalProvider from "@/components/ModalProvider";
 import SideBar from "@/components/SideBar";
 import TaskStats from "@/components/tasks/TaskStats";
 import { createRootRoute } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 export const Route = createRootRoute({
   component: () => (
@@ -19,7 +18,6 @@ export const Route = createRootRoute({
           <TaskStats />
         </main>
       </div>
-      <TanStackRouterDevtools />
     </>
   ),
 });

@@ -1,5 +1,6 @@
 # Productivity App
 
+![image](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![image](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
 ![image](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![image](https://img.shields.io/badge/GraphQl-E10098?style=for-the-badge&logo=graphql&logoColor=white)
@@ -13,7 +14,7 @@ Productivity App es una aplicación de gestión de tareas construida con Vite, R
 
 La aplicación está desplegada y lista para ser probada en el siguiente enlace:
 
-[Productivity App - Demo](https://tusitio.com)
+[Productivity App - Demo](https://productivity-app-client.pages.dev/)
 
 ## Características
 
@@ -41,7 +42,7 @@ Para correr el proyecto localmente, sigue estos pasos:
 1. **Clonar el repositorio:**
 
    ```bash
-   git clone https://github.com/tu-usuario/productivity-app.git
+   git clone https://github.com/MissaelLpez/productivity-app-client.git
    cd productivity-app
    ```
 
@@ -80,6 +81,10 @@ Para correr el proyecto localmente, sigue estos pasos:
    ```
 
    Esto previsualizará la aplicación en el navegador.
+
+El repositorio del backend de la API GraphQL que utiliza esta aplicación se encuentra disponible en el siguiente enlace:
+
+[Repositorio de la API](https://github.com/MissaelLpez/productivity-app-api)
 
 ## Contacto
 
