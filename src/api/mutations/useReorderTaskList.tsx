@@ -42,6 +42,9 @@ const useReorderTaskList = () => {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["all-tasks"] });
     },
+    onError: () => {
+      alert("Ocurrio un error. Intenta nuevamente");
+    },
   });
 };
 

@@ -43,6 +43,9 @@ const useUpdateTask = () => {
       queryClient.refetchQueries({ queryKey: ["all-tasks"] });
       queryClient.refetchQueries({ queryKey: ["tasks-stats"] });
     },
+    onError: () => {
+      alert("Ocurrio un error. Intenta nuevamente");
+    },
   });
 };
 

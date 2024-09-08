@@ -35,14 +35,14 @@ const useGetTasksByTime = ({
       const mediums = todo.filter(
         (elm) =>
           Number(elm.defined_time) > 1800000 &&
-          Number(elm.defined_time) <= 2700000
+          Number(elm.defined_time) <= 3600000
       );
 
       filterTasks = mediums;
     }
 
     if (type === "long") {
-      const long = todo.filter((elm) => Number(elm.defined_time) > 2700000);
+      const long = todo.filter((elm) => Number(elm.defined_time) > 3600000);
 
       filterTasks = long;
     }
@@ -70,14 +70,14 @@ const useGetTasksByTime = ({
     const mediums = completed.filter(
       (elm) =>
         Number(elm.defined_time) > 1800000 &&
-        Number(elm.defined_time) <= 2700000
+        Number(elm.defined_time) <= 3600000
     );
 
     filterTasks = mediums;
   }
 
   if (type === "long") {
-    const long = completed.filter((elm) => Number(elm.defined_time) > 2700000);
+    const long = completed.filter((elm) => Number(elm.defined_time) > 3600000);
 
     filterTasks = long;
   }

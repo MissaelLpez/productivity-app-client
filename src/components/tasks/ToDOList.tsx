@@ -1,3 +1,4 @@
+import useCreateManyTasks from "@/api/mutations/useCreateManyTasks";
 import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
 import useGetTasksByTime from "@/hooks/useGetTasksByTime";
@@ -18,6 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Button } from "../ui/button";
 import TaskCard from "./TaskCard";
 
 const ToDoList = () => {
@@ -33,6 +35,7 @@ const ToDoList = () => {
     (state: RootState) => state.filters.inProgressFilter
   );
 
+  const { mutate: createManyTasks, isPending } = useCreateManyTasks();
   const { data } = useGetTasks();
   const { tasks, stats } = useGetTasksByTime({
     status: "in_progress",
@@ -75,6 +78,20 @@ const ToDoList = () => {
     return null;
   }
 
+  if (Number(stats?.inProgress) <= 0 && Number(stats?.completed) <= 0) {
+    return (
+      <div className="flex items-center justify-center my-10">
+        <Button
+          onClick={() => createManyTasks()}
+          className="rounded-xl"
+          disabled={isPending}
+        >
+          Crear tareas de prueba
+        </Button>
+      </div>
+    );
+  }
+
   return tasks.length ? (
     <DndContext
       sensors={sensors}
@@ -93,7 +110,7 @@ const ToDoList = () => {
     </DndContext>
   ) : (
     <h3 className="text-center text-xl font-bold my-10">
-      {Number(stats?.inProgress) <= 0 && "No hay tareas"}
+      {Number(stats?.inProgress) <= 0 && "No hay tareas pendientes"}
     </h3>
   );
 };

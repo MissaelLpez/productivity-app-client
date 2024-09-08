@@ -46,6 +46,9 @@ const useDeleteTask = () => {
       queryClient.refetchQueries({ queryKey: ["tasks-stats"] });
       dispatch(setOpenTask(null));
     },
+    onError: () => {
+      alert("Ocurrio un error. Intenta nuevamente");
+    },
   });
 };
 

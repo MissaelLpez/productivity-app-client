@@ -47,6 +47,9 @@ const useCreateTask = () => {
       queryClient.refetchQueries({ queryKey: ["tasks-stats"] });
       dispatch(setOpenCreateTask());
     },
+    onError: () => {
+      alert("Ocurrio un error. Intenta nuevamente");
+    },
   });
 };
 

@@ -51,9 +51,9 @@ const FilterTasks = ({ type }: Props) => {
           </SelectTrigger>
           <SelectContent className="text-dark dark:text-white outline-none bg-white dark:bg-dark">
             <SelectItem value="all">Todas las tareas</SelectItem>
-            <SelectItem value="short">Tareas cortas</SelectItem>
-            <SelectItem value="medium">Tareas medianas</SelectItem>
-            <SelectItem value="long">Tareas largas</SelectItem>
+            <SelectItem value="short">Corta duración</SelectItem>
+            <SelectItem value="medium">Mediana duración</SelectItem>
+            <SelectItem value="long">Larga duración</SelectItem>
           </SelectContent>
         </Select>
       </label>
