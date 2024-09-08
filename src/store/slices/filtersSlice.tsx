@@ -6,7 +6,7 @@ export interface FilterState {
 }
 
 const initialState: FilterState = {
-  inProgressFilter: "short",
+  inProgressFilter: "all",
   completedFilter: "all",
 };
 

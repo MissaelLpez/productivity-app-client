@@ -19,7 +19,7 @@ const TaskStats = () => {
   const { stats, all, inProgress } = data;
 
   return (
-    <section className="border-l border-primary-900 p-2 lg:p-5 hidden lg:flex flex-col gap-y-5 col-span-1 bg-transparent">
+    <section className="p-2 lg:p-5 hidden lg:flex flex-col gap-y-5 col-span-1 bg-transparent">
       {all.length ? (
         <>
           {stats.inProgress > 0 && pathname !== "/" && (

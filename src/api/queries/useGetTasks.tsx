@@ -30,7 +30,7 @@ const gqlRequest = async () => {
   const { getAllTasks: tasks } = data;
 
   const all = tasks;
-  const completed = tasks.filter((elm) => elm.status === "completed");
+  const completed = tasks.reverse().filter((elm) => elm.status === "completed");
   const todo = tasks.filter(
     (task) => task.status === "todo" || task.status === "paused"
   );

@@ -3,6 +3,7 @@ import { setOpenTask } from "@/store/slices/modalSlice";
 import { Task } from "@/vite-env";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { format } from "date-fns";
 import { CircleCheck, Clock, PauseCircle } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Card } from "../ui/card";
@@ -37,13 +38,20 @@ const TaskCard = ({ task }: Props) => {
       ? "border border-primary-500"
       : "border dark:border-transparent";
 
+  const isoDate =
+    task.status === "completed"
+      ? task.completed_at
+      : "2024-09-07T16:00:00.000Z";
+  const localDate = new Date(String(isoDate));
+  const formattedDate = format(localDate, "HH:mm dd/MM/yy");
+
   return (
     <Card
       {...attributes}
       {...listeners}
       ref={setNodeRef}
       style={style}
-      className={`flex justify-between p-5 rounded-xl cursor-pointer h-40 z-50 ${border}`}
+      className={`shadow-2xl flex justify-between p-5 rounded-xl cursor-pointer h-11/12 z-50 ${border}`}
       onClick={() => dispatch(setOpenTask(task))}
     >
       {/* Task name and description */}
@@ -52,7 +60,9 @@ const TaskCard = ({ task }: Props) => {
           {task.name}
         </p>
         <p className="text-lg first-letter:uppercase tracking-wide font-medium mb-6">
-          {formattedTime}
+          {task.status === "completed"
+            ? `Completado: ${formattedDate}`
+            : formattedTime}
         </p>
 
         <p className="text-base truncate overflow-hidden first-letter:uppercase tracking-wide font-b">
@@ -65,16 +75,24 @@ const TaskCard = ({ task }: Props) => {
         <div className="flex gap-x-1 justify-center items-center">
           {(task.status === "in_progress" || task.status === "continuing") && (
             <div className="flex flex-col items-center justify-center gap-y-1">
-              <Clock size={30} />
+              <Clock className="text-primary-400" size={30} />
               <TaskCountdown size="text-sm" taskId={task.id} />
             </div>
           )}
 
-          {task.status === "paused" && <PauseCircle size={30} />}
+          {task.status === "paused" && (
+            <PauseCircle className="text-primary-400" size={30} />
+          )}
 
-          {task.status === "todo" && <Clock size={30} />}
+          {task.status === "todo" && (
+            <Clock className="text-primary-300" size={30} />
+          )}
 
-          {task.status === "completed" && <CircleCheck size={30} />}
+          {task.status === "completed" && (
+            <div className="break-words text-center flex flex-col justify-center items-center">
+              <CircleCheck className="text-primary-400" size={30} />
+            </div>
+          )}
         </div>
       </div>
     </Card>

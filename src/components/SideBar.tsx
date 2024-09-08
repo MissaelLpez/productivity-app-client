@@ -1,7 +1,12 @@
+import useCreateManyTasks from "@/api/mutations/useCreateManyTasks";
+import useGetTasks from "@/api/queries/useGetTasks";
 import { Link, useLocation } from "@tanstack/react-router";
+import { Button } from "./ui/button";
 
 const SideBar = () => {
   const { pathname } = useLocation();
+  const { data } = useGetTasks();
+  const { mutate: createManyTasks, isPending } = useCreateManyTasks();
 
   /* Menu Items */
   const items = [
@@ -11,7 +16,7 @@ const SideBar = () => {
   ];
 
   return (
-    <section className="border-r border-primary-900 p-2 lg:p-5 hidden lg:block col-span-1 bg-transparent mr-10">
+    <section className="p-2 lg:p-5 hidden lg:block col-span-1 bg-transparent mr-10">
       <div className="flex flex-col">
         {items.map((elm, i) => (
           <Link
@@ -26,6 +31,13 @@ const SideBar = () => {
             {elm.text}
           </Link>
         ))}
+
+        <Button
+          onClick={() => createManyTasks()}
+          className="rounded-xl bg-primary-700 fixed bottom-16"
+        >
+          Crear tareas aleatorias
+        </Button>
       </div>
     </section>
   );

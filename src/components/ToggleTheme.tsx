@@ -37,7 +37,7 @@ const ToggleTheme = () => {
       {mode === "dark" ? (
         <Sun size={30} className="text-primary-500" />
       ) : (
-        <Moon size={30} />
+        <Moon className="text-primary-500" size={30} />
       )}
     </div>
   );

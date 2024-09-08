@@ -23,7 +23,7 @@ const ToDo = () => {
   const { stats, inProgress } = data;
 
   return (
-    <div>
+    <div className="mx-0 md:mx-20">
       <Helmet>
         <title>{stats.inProgress > 0 ? "(1)" : ""} Tareas Pendientes</title>
         <meta name="description" content="Tareas Pendientes" />

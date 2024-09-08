@@ -1,4 +1,3 @@
-import useCreateManyTasks from "@/api/mutations/useCreateManyTasks";
 import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
 import useGetTasksByTime from "@/hooks/useGetTasksByTime";
@@ -19,7 +18,6 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "../ui/button";
 import TaskCard from "./TaskCard";
 
 const ToDoList = () => {
@@ -35,7 +33,6 @@ const ToDoList = () => {
     (state: RootState) => state.filters.inProgressFilter
   );
 
-  const { mutate: createManyTasks, isPending } = useCreateManyTasks();
   const { data } = useGetTasks();
   const { tasks, stats } = useGetTasksByTime({
     status: "in_progress",
@@ -76,20 +73,6 @@ const ToDoList = () => {
 
   if (!data) {
     return null;
-  }
-
-  if (Number(stats?.inProgress) <= 0 && Number(stats?.completed) <= 0) {
-    return (
-      <div className="flex items-center justify-center my-10">
-        <Button
-          onClick={() => createManyTasks()}
-          className="rounded-xl"
-          disabled={isPending}
-        >
-          Crear tareas de prueba
-        </Button>
-      </div>
-    );
   }
 
   return tasks.length ? (

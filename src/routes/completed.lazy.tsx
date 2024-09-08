@@ -33,7 +33,7 @@ function Completed() {
   }
 
   return (
-    <>
+    <div className="mx-0 md:mx-20">
       <Helmet>
         <title>Tareas Completadas</title>
         <meta name="description" content="Tareas Completadas" />
@@ -51,6 +51,6 @@ function Completed() {
           No hay tareas Completadas
         </h3>
       )}
-    </>
+    </div>
   );
 }

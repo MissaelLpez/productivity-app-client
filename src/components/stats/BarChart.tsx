@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/chart";
 import { WeekStats } from "@/vite-env";
 import { Bar, BarChart as Chart, XAxis } from "recharts";
+import { Card } from "../ui/card";
 
 interface Props {
   week: WeekStats;
@@ -27,10 +28,10 @@ const BarChart = ({ week, isCurrent = false }: Props) => {
   }
 
   return (
-    <div
+    <Card
       className={`${
         isCurrent ? "col-span-3 xl:col-span-2" : "col-span-3"
-      } flex flex-col border border-primary-200 items-center justify-center text-center`}
+      } rounded-xl flex flex-col shadow-2xl items-center justify-center text-center`}
     >
       <div className="flex flex-col w-full">
         <p className="flex flex-col text-2xl font-bold my-5">
@@ -50,12 +51,12 @@ const BarChart = ({ week, isCurrent = false }: Props) => {
               tickMargin={10}
               axisLine={true}
             />
-            <Bar barSize={40} dataKey="count" fill="#f49d0c" radius={4} />
+            <Bar barSize={40} dataKey="count" fill="#249eb6" radius={4} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           </Chart>
         </ChartContainer>
       </div>
-    </div>
+    </Card>
   );
 };
 
