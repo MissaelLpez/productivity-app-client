@@ -1,41 +1,26 @@
 import { Task } from "@/vite-env";
 
 interface Props {
-  task: Task | null;
-  used_in: "card" | "timer";
+  task: Task | null | undefined;
+  time?: number;
+  inStats?: boolean;
 }
 
-const useFormattedTime = ({ task, used_in }: Props) => {
-  if (!task) {
+const useFormattedTime = ({ task, time = 0, inStats = false }: Props) => {
+  if (!task && !inStats) {
     return { formattedTime: "" };
   }
 
-  let milliseconds = 0;
+  let milliseconds = Number(task?.redefined_time);
 
-  if (task.status === "todo" || used_in === "card") {
-    console.log(task.name, "in todo", task.defined_time);
-    milliseconds = Number(task.defined_time);
+  if (task?.status === "completed") {
+    milliseconds = Number(task?.defined_time) - Number(task?.remaining_time);
   }
 
-  /* if (task.status === "paused") {
-    const startedAt = new Date(String(task.started_at));
-    const pausedIn = new Date(String(task.paused_in));
-    const diff = Number(pausedIn) - Number(startedAt);
-    const remainingTime = Number(task.defined_time) - diff;
-
-    milliseconds = remainingTime <= 0 ? 0 : remainingTime;
+  if (inStats) {
+    milliseconds = time;
   }
 
-  if (task.status === "continuing") {
-    const startedAt = new Date(String(task.started_at));
-    const pausedIn = new Date(String(task.paused_in));
-    const diff = Number(pausedIn) - Number(startedAt);
-    const remainingTime = Number(task.defined_time) - diff;
-
-    milliseconds = remainingTime <= 0 ? 0 : remainingTime;
-  } */
-
-  /* Convert milliseconds to seconds */
   const totalSeconds = Math.floor(milliseconds / 1000);
 
   /* Calculate hours, minutes, and seconds */

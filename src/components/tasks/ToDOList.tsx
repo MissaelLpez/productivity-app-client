@@ -1,6 +1,8 @@
 import useReorderTaskList from "@/api/mutations/useReorderTaskList";
 import useGetTasks from "@/api/queries/useGetTasks";
-import TaskCard from "@/components/tasks/TaskCard";
+import useGetTasksByTime from "@/hooks/useGetTasksByTime";
+import { RootState } from "@/store/store";
+import { Task } from "@/vite-env";
 import {
   closestCenter,
   DndContext,
@@ -15,6 +17,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import TaskCard from "./TaskCard";
 
 const ToDoList = () => {
   const sensors = useSensors(
@@ -25,36 +29,53 @@ const ToDoList = () => {
     })
   );
 
-  const { showInTodoList: todo } = useGetTasks();
-  const [list, setList] = useState(todo);
-  const { reorderTasks } = useReorderTaskList();
+  const inProgressFilter = useSelector(
+    (state: RootState) => state.filters.inProgressFilter
+  );
+
+  const { data } = useGetTasks();
+  const { tasks, stats } = useGetTasksByTime({
+    status: "in_progress",
+    type: inProgressFilter,
+  });
+
+  const [list, setList] = useState<Task[]>(tasks);
+  const { mutate: reorderTasks } = useReorderTaskList();
 
   /* execute in drag end */
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     setList((list) => {
-      const oldIndex = list.findIndex((task) => task.id === active.id);
-      const newIndex = list.findIndex((task) => task.id === over?.id);
+      const oldIndex = list?.findIndex((task) => task.id === active.id);
+      const newIndex = list?.findIndex((task) => task.id === over?.id);
 
-      const newOrder = arrayMove(list, oldIndex, newIndex);
+      const newOrder = arrayMove(
+        list || [],
+        Number(oldIndex),
+        Number(newIndex)
+      );
 
       const newArray = newOrder.map((task, index) => ({
         id: task.id,
         list_number: index + 1,
       }));
 
-      reorderTasks({ variables: { newOrder: newArray } });
+      reorderTasks({ newOrder: newArray });
 
       return newOrder;
     });
   };
 
   useEffect(() => {
-    setList(todo);
-  }, [todo, list]);
+    setList(tasks);
+  }, [tasks]);
 
-  return todo.length ? (
+  if (!data) {
+    return null;
+  }
+
+  return tasks.length ? (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
@@ -64,14 +85,16 @@ const ToDoList = () => {
       <SortableContext items={list} strategy={verticalListSortingStrategy}>
         {/* Render task card component */}
         <div className="grid grid-cols-1 gap-y-4">
-          {list.map((elm) => (
+          {list?.map((elm) => (
             <TaskCard key={elm.id} task={elm} />
           ))}
         </div>
       </SortableContext>
     </DndContext>
   ) : (
-    <h3 className="text-center text-xl font-bold my-10">No hay tareas</h3>
+    <h3 className="text-center text-xl font-bold my-10">
+      {Number(stats?.inProgress) <= 0 && "Sin tareas pendientes"}
+    </h3>
   );
 };
 

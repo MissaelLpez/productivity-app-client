@@ -1,9 +1,12 @@
-import useUpdateTask from "@/api/mutations/useUpdateTask";
+import useDeleteTask from "@/api/mutations/useDeleteTask";
 import useFormattedTime from "@/hooks/useFormattedTime";
-import { setOpenTask } from "@/store/slices/modalSlice";
+import useGetTaskById from "@/hooks/useGetTaskById";
+import { setOpenEditTask, setOpenTask } from "@/store/slices/modalSlice";
 import { RootState } from "@/store/store";
+import { Edit, TrashIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import TaskCountdown from "./TaskCountdown";
 import TaskTimerActions from "./TaskTimerActions";
 
 const Task = () => {
@@ -11,29 +14,49 @@ const Task = () => {
   const isOpen = useSelector((state: RootState) => state.modals.openTask);
 
   /* Task data */
-  const task = useSelector((state: RootState) => state.modals.task);
+  const taskInRedux = useSelector((state: RootState) => state.modals.task);
+
+  const { task, isLoading } = useGetTaskById(Number(taskInRedux?.id));
 
   /* Hooks */
-  const { updateTask } = useUpdateTask();
-  const { minutes, seconds } = useFormattedTime({
+  const { formattedTime } = useFormattedTime({
     task,
-    used_in: "timer",
   });
-  const dispatch = useDispatch();
+  const { mutate: deleteTask, isPending } = useDeleteTask();
 
-  const currentTime = Date.now();
+  const dispatch = useDispatch();
 
   if (!task) {
     return null;
   }
 
+  const border =
+    task.status !== "completed" ? "border-primary-500" : "border-green-500";
+
   return (
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
-      <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-3/4 w-11/12 border-primary-200">
+      <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-11/12 w-11/12 border-primary-200">
         <DialogHeader>
-          <DialogTitle className="text-lg font-medium">
-            Detalles de la Tarea
-          </DialogTitle>
+          <div className="flex flex-col items-center justify-center mb-10">
+            <DialogTitle className="text-xl font-medium">
+              Detalles de la Tarea
+            </DialogTitle>
+
+            {(task.status === "paused" || task.status === "todo") && (
+              <div className="flex gap-5 mt-2">
+                <TrashIcon
+                  onClick={() => deleteTask({ taskId: task.id })}
+                  size={30}
+                  className="cursor-pointer text-primary-200 hover:text-primary-900"
+                />
+                <Edit
+                  onClick={() => dispatch(setOpenEditTask())}
+                  size={30}
+                  className="cursor-pointer text-primary-200 hover:text-primary-500"
+                />
+              </div>
+            )}
+          </div>
         </DialogHeader>
 
         <div className="flex flex-col items-center">
@@ -46,13 +69,33 @@ const Task = () => {
             </p>
           </div>
 
-          <div className="mb-8 w-64 h-64 bg-transparent border-8 border-primary-500 rounded-full flex justify-center items-center">
-            <p className="text-3xl">
-              {minutes}:{seconds}
-            </p>
+          <div
+            className={`mb-10 w-64 h-64 bg-transparent border-8 ${border} rounded-full flex justify-center items-center`}
+          >
+            {task.status === "in_progress" || task.status === "continuing" ? (
+              <TaskCountdown taskId={task.id} />
+            ) : (
+              <p className="text-3xl text-dark dark:text-white">
+                {isLoading || isPending ? "--:--" : formattedTime}
+              </p>
+            )}
           </div>
 
-          <TaskTimerActions task={task} />
+          {isLoading || isPending ? (
+            <div className="my-10"></div>
+          ) : (
+            <>
+              {task.status === "completed" && (
+                <p className="text-2xl">Completada</p>
+              )}
+
+              <div className="my-10">
+                {task.status !== "completed" && (
+                  <TaskTimerActions taskId={task.id} />
+                )}
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

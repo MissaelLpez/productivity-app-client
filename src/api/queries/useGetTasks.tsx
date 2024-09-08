@@ -1,5 +1,7 @@
-import { GetAllTasksData, Stats, Task } from "@/vite-env";
-import { gql, useSuspenseQuery } from "@apollo/client";
+import { graphqlClient } from "@/gqlClient";
+import { GetAllTasksDataResponse, Stats } from "@/vite-env";
+import { useQuery } from "@tanstack/react-query";
+import { gql } from "graphql-request";
 
 export const GET_ALL_TASKS = gql`
   query GetAllTasks {
@@ -9,56 +11,54 @@ export const GET_ALL_TASKS = gql`
       description
       status
       defined_time
+      redefined_time
       started_at
+      finish_in
       completed_at
+      remaining_time
       paused_in
       list_number
     }
   }
 `;
 
-const useGetTasks = () => {
-  const { data } = useSuspenseQuery<GetAllTasksData>(GET_ALL_TASKS, {
-    fetchPolicy: "cache-and-network",
-  });
-
-  const tasks = data.getAllTasks;
-
-  /* Get task stats */
-  const completed: Task[] = tasks.filter((task) => task.status === "completed");
-  const todo: Task[] = tasks.filter((task) => task.status === "todo");
-  const inProgress: Task[] = tasks.filter(
-    (task) => task.status === "in_progress"
-  );
-  const showInTodoList: Task[] = tasks.filter((task) =>
-    ["continuing", "paused", "todo"].includes(task.status)
+const gqlRequest = async () => {
+  const data = await graphqlClient.request<GetAllTasksDataResponse>(
+    GET_ALL_TASKS
   );
 
-  const rangTime = tasks.reduce((acc, act) => {
-    const diff = Number(act.completed_at) - Number(act.started_at);
-    return acc + diff;
+  const { getAllTasks: tasks } = data;
+
+  const all = tasks;
+  const completed = tasks.reverse().filter((elm) => elm.status === "completed");
+  const todo = tasks.filter(
+    (task) => task.status === "todo" || task.status === "paused"
+  );
+  const inProgress = tasks.filter(
+    (task) => task.status === "in_progress" || task.status === "continuing"
+  );
+
+  const focusedTime = completed.reduce((acc, act) => {
+    return acc + (Number(act.defined_time) - Number(act.remaining_time));
   }, 0);
-
-  const seconds = rangTime / 1000;
-  const minutes = seconds / 60;
-  const hours = minutes / 60;
-
-  const focusedTime = {
-    hours,
-    minutes,
-    seconds,
-  };
 
   const stats: Stats = {
     completed: completed.length,
-    todo: todo.length,
+    todo: todo.length + inProgress.length,
     inProgress: inProgress.length,
     focusedTime,
   };
 
-  console.log(tasks);
+  return { all, completed, todo, inProgress, stats };
+};
 
-  return { tasks, todo, inProgress, showInTodoList, stats };
+const useGetTasks = () => {
+  return useQuery({
+    queryKey: ["all-tasks"],
+    queryFn: gqlRequest,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export default useGetTasks;

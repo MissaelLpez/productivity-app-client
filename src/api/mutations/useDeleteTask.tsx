@@ -1,15 +1,17 @@
 import { graphqlClient } from "@/gqlClient";
-import { UpdateTaskInput, UpdateTaskResponse } from "@/vite-env";
+import { setOpenTask } from "@/store/slices/modalSlice";
+import { DeleteTaskResponse } from "@/vite-env";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useDispatch } from "react-redux";
 
 interface Payload {
-  updateTaskInput: UpdateTaskInput;
+  taskId: number;
 }
 
-const UPDATE_TASK = gql`
-  mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
-    updateTask(updateTaskInput: $updateTaskInput) {
+const DELETE_TASK = gql`
+  mutation DeleteTask($taskId: Float!) {
+    deleteTask(taskId: $taskId) {
       id
       name
       description
@@ -23,25 +25,26 @@ const UPDATE_TASK = gql`
   }
 `;
 
-const gqlRequest = async ({ updateTaskInput }: Payload) => {
-  const variables = { updateTaskInput };
-  const data = await graphqlClient.request<UpdateTaskResponse>(
-    UPDATE_TASK,
+const gqlRequest = async ({ taskId }: Payload) => {
+  const variables = { taskId };
+  const data = await graphqlClient.request<DeleteTaskResponse>(
+    DELETE_TASK,
     variables
   );
-  return data.updateTask;
+  return data.deleteTask;
 };
 
-/* Mutation to update a task */
-const useUpdateTask = () => {
+const useDeleteTask = () => {
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
   return useMutation({
-    mutationKey: ["update-task"],
+    mutationKey: ["delete-task"],
     mutationFn: gqlRequest,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["all-tasks"] });
       queryClient.refetchQueries({ queryKey: ["tasks-stats"] });
+      dispatch(setOpenTask(null));
     },
     onError: () => {
       alert("Ocurrio un error. Intenta nuevamente");
@@ -49,4 +52,4 @@ const useUpdateTask = () => {
   });
 };
 
-export default useUpdateTask;
+export default useDeleteTask;

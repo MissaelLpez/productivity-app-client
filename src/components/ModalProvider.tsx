@@ -9,10 +9,18 @@ const ModalProvider = () => {
     (state: RootState) => state.modals.openTask
   );
 
+  const createTaskModalOpen = useSelector(
+    (state: RootState) => state.modals.openCreateTask
+  );
+
+  const editTaskModalOpen = useSelector(
+    (state: RootState) => state.modals.openEditTask
+  );
+
   return (
     <>
-      <CreateTask />
-      <EditTask />
+      {createTaskModalOpen && <CreateTask />}
+      {editTaskModalOpen && <EditTask />}
       {taskModalOpen && <Task />}
     </>
   );
