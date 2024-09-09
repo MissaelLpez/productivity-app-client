@@ -50,8 +50,8 @@ const TaskCard = ({ task }: Props) => {
       {...attributes}
       {...listeners}
       ref={setNodeRef}
-      style={style}
-      className={`shadow-2xl flex justify-between p-5 rounded-xl cursor-pointer h-11/12 z-50 ${border}`}
+      style={task.status === "completed" ? {} : style}
+      className={`bg-white dark:bg-dark shadow-2xl flex justify-between p-5 rounded-xl cursor-pointer h-11/12 z-50 ${border}`}
       onClick={() => dispatch(setOpenTask(task))}
     >
       {/* Task name and description */}

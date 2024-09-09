@@ -67,7 +67,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-500"
+          className="cursor-pointer text-primary-500 hover:text-primary-700"
         />
       )}
 
@@ -82,7 +82,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-500"
+          className="cursor-pointer text-primary-500 hover:text-primary-700"
         />
       )}
 
@@ -99,7 +99,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-500"
+          className="cursor-pointer text-primary-500 hover:text-primary-700"
         />
       )}
 
@@ -113,7 +113,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             })
           }
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-500"
+          className="cursor-pointer text-primary-500 hover:text-primary-700"
         />
       )}
 
@@ -133,7 +133,7 @@ const TaskTimerActions = ({ taskId }: Props) => {
             dispatch(setOpenTask(null));
           }}
           size={50}
-          className="cursor-pointer text-primary-200 hover:text-primary-500"
+          className="cursor-pointer text-primary-500 hover:text-primary-700"
         />
       )}
     </div>

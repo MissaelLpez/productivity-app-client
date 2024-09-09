@@ -38,7 +38,7 @@ const FilterTasks = ({ type }: Props) => {
   };
 
   return (
-    <div className="w-full md:w-1/3 mb-5">
+    <div className="w-full md:w-1/3 mb-5 z-50">
       <label className="w-full flex gap-x-2 items-center justify-center">
         <p className="mt-2 mb-4">Filtrar: </p>
         <Select
