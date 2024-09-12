@@ -34,8 +34,8 @@ const Task = () => {
     <Dialog open={isOpen} onOpenChange={() => dispatch(setOpenTask(task))}>
       <DialogContent className="bg-white dark:bg-dark text-dark dark:text-white h-11/12 w-11/12 border-primary-200">
         <DialogHeader>
-          <div className="flex flex-col items-center justify-center mb-10">
-            <DialogTitle className="text-xl font-medium">
+          <div className="flex flex-col items-center justify-center mb-5 md:mb-10">
+            <DialogTitle className="text-lg md:text-xl font-medium">
               Detalles de la Tarea
             </DialogTitle>
 
@@ -66,7 +66,7 @@ const Task = () => {
             </p>
           </div>
 
-          <div className="mb-10 w-64 h-64 bg-transparent border-8 $border-primary-500 rounded-full flex justify-center items-center">
+          <div className="mb-5 md:mb-10 w-48 h-48 md:w-64 md:h-64 bg-transparent border-8 $border-primary-500 rounded-full flex justify-center items-center">
             {task.status === "in_progress" || task.status === "continuing" ? (
               <TaskCountdown taskId={task.id} />
             ) : (
@@ -77,7 +77,7 @@ const Task = () => {
           </div>
 
           {isLoading || isPending ? (
-            <div className="my-10"></div>
+            <div className="my-5 md:my-10"></div>
           ) : (
             <>
               {task.status === "completed" && (

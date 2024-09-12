@@ -25,6 +25,8 @@ const ToDoList = () => {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 8,
+        delay: 250,
+        tolerance: 5,
       },
     })
   );
@@ -85,9 +87,7 @@ const ToDoList = () => {
       <SortableContext items={list} strategy={verticalListSortingStrategy}>
         {/* Render task card component */}
         <div className="grid grid-cols-1 gap-y-4">
-          {list?.map((elm) => (
-            <TaskCard key={elm.id} task={elm} />
-          ))}
+          {list?.map((elm) => <TaskCard key={elm.id} task={elm} />)}
         </div>
       </SortableContext>
     </DndContext>
